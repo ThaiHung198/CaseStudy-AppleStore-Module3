@@ -3,7 +3,7 @@ package com.example.casestady.model;
 import java.sql.Timestamp;
 public class Admin {
     private int adminId;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private Timestamp createdAt;
@@ -20,11 +20,11 @@ public class Admin {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

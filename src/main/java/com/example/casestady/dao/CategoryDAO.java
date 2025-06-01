@@ -2,7 +2,6 @@ package com.example.casestady.dao;
 
 import com.example.casestady.model.Category;
 
-import java.beans.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +43,7 @@ public class CategoryDAO  extends DBContext{
         String sql ="SELECT category_id,name,description,created_at,updated_at FROM Categories WHERE category_id = ?";
         try{
             if (connection == null || connection.isClosed()){
-                System.err.println("Lỗi: Kết nối CSDL chưa  chưa được khởi tạo hoặc đã đóng!");
+                System.err.println("Lỗi: Kết nối CSDL chưa được khởi tạo hoặc đã đóng!");
                 return null;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -74,7 +73,8 @@ public class CategoryDAO  extends DBContext{
                 return -1;
             }
             // Sử dụng Statement.RETURN_GENERATED_KEYS để lấy ID tự tăng
-            PreparedStatement ps = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);            ps.setString(1,category.getName());
+            PreparedStatement ps = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,category.getName());
             ps.setString(2,category.getDescription());
 
             int affectedRows = ps.executeUpdate();

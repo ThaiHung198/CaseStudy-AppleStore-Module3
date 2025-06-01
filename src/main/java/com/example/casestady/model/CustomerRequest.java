@@ -1,6 +1,6 @@
 package com.example.casestady.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class CustomerRequest {
     private int requestId;
@@ -12,6 +12,13 @@ public class CustomerRequest {
     private Timestamp receivedAt;
 
     public CustomerRequest() {
+    }
+
+    public CustomerRequest(String customerName, String customerEmail, String customerPhone, String message) {
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.customerPhone = customerPhone;
+        this.message = message;
     }
 
     public int getRequestId() {
@@ -68,5 +75,19 @@ public class CustomerRequest {
 
     public void setReceivedAt(Timestamp receivedAt) {
         this.receivedAt = receivedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerRequest{" +
+                "requestId=" + requestId +
+                ", customerName='" + customerName + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", message='" + message + '\'' +
+                ", status='" + status + '\'' +
+                ", receivedAt=" + receivedAt +
+                '}';
+
     }
 }

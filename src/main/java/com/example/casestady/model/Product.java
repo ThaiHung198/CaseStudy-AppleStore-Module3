@@ -70,7 +70,7 @@ public class Product {
         return isFeatured;
     }
 
-    public void setFeatured(boolean featured) {
+    public void setisFeatured(boolean featured) {
         isFeatured = featured;
     }
 
