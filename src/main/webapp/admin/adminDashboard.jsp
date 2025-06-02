@@ -11,7 +11,7 @@
 <%-- Kiểm tra xem admin đã đăng nhập chưa --%>
 <c:if test="${empty sessionScope.adminLoggedIn}">
     <%-- Nếu chưa đăng nhập, chuyển hướng về trang login --%>
-    <c:redirect url="${pageContext.request.contextPath}/adminLogin"/>
+    <c:redirect url="${pageContext.request.contextPath}/admin/adminLogin.jsp"/>
 </c:if>
 
 <!DOCTYPE html>

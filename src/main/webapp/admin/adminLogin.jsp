@@ -51,7 +51,7 @@
       Ví dụ, nếu context path của bạn là "CaseStady_AppleStore", URL sẽ là "/CaseStady_AppleStore/adminLogin"
       URL này sẽ được map tới AdminLoginServlet.
   --%>
-  <form action="${pageContext.request.contextPath}/adminLogin" method="post">
+  <form action="${pageContext.request.contextPath}/admin/adminLogin" method="post">
     <div>
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" required value="admin"> <%-- Thêm value để tiện test --%>

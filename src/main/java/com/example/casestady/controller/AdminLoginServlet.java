@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "AdminLoginServlet", urlPatterns = "/adminLogin")
+@WebServlet(name = "AdminLoginServlet", urlPatterns = "/admin/adminLogin")
 public class AdminLoginServlet extends HttpServlet {
     private AdminDAO adminDAO;
 
@@ -25,10 +25,10 @@ public class AdminLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); // false: không tạo session mới nếu chưa có
         if (session != null && session.getAttribute("adminLoggedIn") != null){
-            response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp"); //Sẽ tạo trang/servlet này sau
+            response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp"); //Sẽ tạo trang/servlet này sau
             return;
         }
-        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
     }
     @Override
     protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
@@ -37,7 +37,7 @@ public class AdminLoginServlet extends HttpServlet {
 
         if (usernameInput == null || usernameInput.isEmpty() || passwordInput == null || passwordInput.isEmpty()){
             request.setAttribute("errorMessage", "Username and password are required.");
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
             return;
         }
         Admin adminFromDB = adminDAO.getAdminByUsername(usernameInput);
@@ -48,11 +48,11 @@ public class AdminLoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("adminLoggedIn", adminFromDB);
             session.setMaxInactiveInterval(30*60);
-            response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
         }else {
             // đăng nhập thất bại
             request.setAttribute("errorMessage", "Invalid username or password.");
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
         }
     }
     @Override
