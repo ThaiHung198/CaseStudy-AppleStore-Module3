@@ -11,7 +11,7 @@
 
 <%-- Kiểm tra session admin --%>
 <c:if test="${empty sessionScope.adminLoggedIn}">
-    <c:redirect url="${pageContext.request.contextPath}/adminLogin"/>
+    <c:redirect url="${pageContext.request.contextPath}/admin/adminLogin.jsp"/>
 </c:if>
 
 <!DOCTYPE html>
