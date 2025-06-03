@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ManageCategoryServlet", urlPatterns = "/manageCategories")
+@WebServlet(name = "ManageCategoryServlet", urlPatterns = "/admin/manageCategories")
 public class ManageCategoryServlet extends HttpServlet {
     private CategoryDAO categoryDAO;
 
@@ -24,9 +24,13 @@ public class ManageCategoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("adminLoggedIn") == null) {
-            response.sendRedirect(request.getContextPath() + "/admin/adminLogin.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/adminLogin");
             return;
         }
         String action = request.getParameter("action");
@@ -59,14 +63,18 @@ public class ManageCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("adminLoggedIn") == null) {
-            response.sendRedirect(request.getContextPath() + "/admin/adminLogin.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/adminLogin");
             return;
         }
         String action = request.getParameter("action");
         if (action == null) {
-            response.sendRedirect(request.getContextPath() + "/manageCategories?action=list"); // Thêm 's'
+            response.sendRedirect(request.getContextPath() + "/admin/manageCategories?action=list"); // Thêm 's'
             return;
 
         }
@@ -79,7 +87,7 @@ public class ManageCategoryServlet extends HttpServlet {
                     updateCategory(request,response);
                     break;
                     default:
-                        response.sendRedirect(request.getContextPath() + "/manageCategories?action=list");
+                        response.sendRedirect(request.getContextPath() + "/admin/manageCategories?action=list");
                         break;
             }
         }catch (Exception e){
@@ -123,7 +131,7 @@ public class ManageCategoryServlet extends HttpServlet {
         } else {
             request.getSession().setAttribute("errorMessage", "Failed to add category. It might already exist or an error occurred.");
         }
-        response.sendRedirect(request.getContextPath() + "/manageCategories?action=list");
+        response.sendRedirect(request.getContextPath() + "/admin/manageCategories?action=list");
     }
 
     private void showEditCategoryForm(HttpServletRequest request, HttpServletResponse response)
@@ -182,7 +190,7 @@ public class ManageCategoryServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.getSession().setAttribute("errorMessage", "Invalid Category ID for update.");
         }
-        response.sendRedirect(request.getContextPath() + "/manageCategories?action=list");
+        response.sendRedirect(request.getContextPath() + "/admin/manageCategories?action=list");
     }
 
     private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
@@ -204,7 +212,7 @@ public class ManageCategoryServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.getSession().setAttribute("errorMessage", "Invalid Category ID format for delete.");
         }
-        response.sendRedirect(request.getContextPath() + "/manageCategories?action=list");
+        response.sendRedirect(request.getContextPath() + "/admin/manageCategories?action=list");
     }
 }
 

@@ -51,7 +51,7 @@
 <body>
 <div class="container">
     <h1>Category Management</h1>
-    <p><a href="${pageContext.request.contextPath}/admin/adminDashboard.jsprd.jsp">Back to Dashboard</a></p> <%-- Hoặc URL của servlet dashboard nếu có --%>
+    <p><a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp">Back to Dashboard</a></p> <%-- Hoặc URL của servlet dashboard nếu có --%>
 
     <%-- Hiển thị thông báo từ session (nếu có) và xóa chúng --%>
     <c:if test="${not empty sessionScope.successMessage}">
@@ -72,7 +72,7 @@
     <%-- Chỉ hiển thị nút "Add New" nếu không phải đang ở form add hoặc edit --%>
     <c:if test="${empty param.action or param.action eq 'list'}">
         <div class="add-btn-container">
-            <a href="${pageContext.request.contextPath}/manageCategories?action=add" class="add-btn">Add New Category</a>
+            <a href="${pageContext.request.contextPath}/admin/manageCategories?action=add" class="add-btn">Add New Category</a>
         </div>
     </c:if>
 
@@ -82,7 +82,7 @@
     <c:if test="${param.action eq 'add' or not empty categoryToEdit}">
         <div class="form-container">
             <h2>${not empty categoryToEdit ? 'Edit Category' : 'Add New Category'}</h2>
-            <form action="${pageContext.request.contextPath}/manageCategories" method="post">
+            <form action="${pageContext.request.contextPath}/admin/manageCategories" method="post">
                     <%-- Nếu là edit, action của form sẽ là "update" --%>
                     <%-- Nếu là add, action của form sẽ là "add" --%>
                 <input type="hidden" name="action" value="${not empty categoryToEdit ? 'update' : 'add'}">
@@ -99,11 +99,11 @@
                 </div>
                 <div>
                     <label for="categoryDescription">Description:</label>
-                    <textarea id="categoryDescription" name="categoryDescription">${fn:escapeXml(not empty categoryToEdit ? categoryToEdit.description : param.categoryDescription)}</textarea>
+                    <textarea id="categoryDescription" name="categoryDescription">${fn:escapeXml(not empty categoryToEdit ? categoryToadmin.description : param.categoryDescription)}</textarea>
                 </div>
                 <div>
                     <input type="submit" value="${not empty categoryToEdit ? 'Update Category' : 'Add Category'}">
-                    <a href="${pageContext.request.contextPath}/manageCategories?action=list" class="cancel-btn">Cancel</a>
+                    <a href="${pageContext.request.contextPath}/admin/manageCategories?action=list" class="cancel-btn">Cancel</a>
                 </div>
             </form>
         </div>
@@ -134,10 +134,10 @@
                     <td>${category.createdAt}</td>
                     <td>${category.updatedAt}</td>
                     <td class="actions">
-                        <a href="${pageContext.request.contextPath}/manageCategories?action=edit&id=${category.categoryId}" class="edit-btn">Edit</a>
+                        <a href="${pageContext.request.contextPath}/admin/manageCategories?action=edit&id=${category.categoryId}" class="edit-btn">Edit</a>
                             <%-- Thêm confirm dialog cho delete --%>
-                        <a href="${pageContext.request.contextPath}/manageCategories?action=delete&id=${category.categoryId}"
-                           onclick="return confirm('Are you sure you want to delete this category? Products in this category might be affected.');" class="delete-btn">Delete</a>
+                        <a href="${pageContext.request.contextPath}/admin/manageCategories?action=delete&id=${category.categoryId}"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không? Các sản phẩm trong danh mục này có thể bị ảnh hưởng.');" class="delete-btn">Delete</a>
                     </td>
                 </tr>
             </c:forEach>

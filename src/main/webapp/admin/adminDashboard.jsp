@@ -31,7 +31,7 @@
 <body>
 <div class="header">
     <h1>Admin Dashboard</h1>
-    <a href="${pageContext.request.contextPath}/adminLogout" class="logout-btn">Logout</a>
+    <a href="${pageContext.request.contextPath}/home" class="logout-btn">Logout</a>
 </div>
 
 <div class="content">
@@ -40,9 +40,10 @@
 
     <p>This is the admin dashboard. You can add links to manage categories, products, view customer requests, etc.</p>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/manageCategories">Manage Categories</a></li>
-        <li><a href="#">Manage Products (To be implemented)</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Manage Categories</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/manageProducts">Quản lý sản phẩm</a></li>
         <li><a href="${pageContext.request.contextPath}/viewRequests">View Customer Requests</a></li>
+
     </ul>
 </div>
 </body>
