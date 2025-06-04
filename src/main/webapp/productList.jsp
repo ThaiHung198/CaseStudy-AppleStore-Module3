@@ -8,9 +8,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${not empty pageTitle ? pageTitle : 'Our Products'} - Apple Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"> <%-- Link CSS chung --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        /* CSS cơ bản cho productList.jsp - bạn có thể tách ra file riêng */
+            /* CSS cơ bản cho productList.jsp - bạn có thể tách ra file riêng */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
         .header-placeholder { background-color: #333; color: white; padding: 20px; text-align: center; }
         .header-placeholder nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
@@ -32,39 +34,42 @@
         .no-products { text-align: center; font-size: 1.2em; color: #777; padding: 30px; }
 
         .footer-placeholder { background-color: #222; color: white; text-align: center; padding: 20px; margin-top: 30px; }
+        .product-card a { text-decoration: none; color: inherit; }
+        .product-card a:hover h3 { color: #007bff; /* Hoặc màu khác */ }
     </style>
 </head>
 <body>
 
-<%-- Header (Menu Danh mục - giống home.jsp) --%>
 <header class="header-placeholder">
-    <nav>
+    <nav class="container">
         <ul>
             <li><a href="${pageContext.request.contextPath}/home">Trang Chủ</a></li>
             <c:if test="${not empty allCategories}">
                 <c:forEach var="category" items="${allCategories}">
                     <li>
                         <a href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}"
-                           class="${category.name eq currentCategoryName ? 'active' : ''}"> <%-- Đánh dấu active category hiện tại nếu có --%>
+                           class="${category.categoryId eq param.categoryId ? 'active' : ''}"> <%-- So sánh ID thay vì tên, và dùng param.categoryId --%>
                             <c:out value="${category.name}"/>
                         </a>
                     </li>
                 </c:forEach>
             </c:if>
             <li><a href="${pageContext.request.contextPath}/contact">Liên Hệ</a></li>
-            <li><a href="#" id="cart-link">Giỏ Hàng (<span id="cart-count">0</span>)</a></li>
+            <li><a href="${pageContext.request.contextPath}/cart-view.jsp" id="cart-link">
+                <i class="fas fa-shopping-cart"></i> Giỏ Hàng (<span id="cart-count">0</span>)</a>
+            </li>
             <li><a href="${pageContext.request.contextPath}/admin/adminLogin">Admin Login</a></li>
         </ul>
     </nav>
 </header>
 
-<div class="container">
-    <div class="page-header">
+<div class="container mt-4">
+    <div class="page-header text-center mb-4">
         <h1>${not empty pageTitle ? pageTitle : 'Our Products'}</h1>
     </div>
 
     <c:if test="${not empty requestScope.errorMessage}">
-        <p class="error-message-jsp">${requestScope.errorMessage}</p>
+        <p class="alert alert-danger">${requestScope.errorMessage}</p>
     </c:if>
 
     <c:choose>
@@ -72,26 +77,39 @@
             <div class="product-grid">
                 <c:forEach var="product" items="${productList}">
                     <div class="product-card">
-                        <c:if test="${not empty product.imageUrl}">
-                            <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
-                        </c:if>
-                        <h3><c:out value="${product.name}"/></h3>
+                            <%-- THÊM LINK VÀO CHI TIẾT SẢN PHẨM --%>
+                        <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}">
+                            <c:if test="${not empty product.imageUrl}">
+                                <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
+                            </c:if>
+                            <c:if test="${empty product.imageUrl}">
+                                <img src="${pageContext.request.contextPath}/images/placeholder.png" alt="No image available">
+                            </c:if>
+                            <h3><c:out value="${product.name}"/></h3>
+                        </a>
                         <p class="price">${product.price} VND</p>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
+                            <%-- Quyết định hàm JavaScript cho nút này --%>
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCartSimple('${fn:escapeXml(product.name)}')">Thêm vào giỏ</button>
+                            <%-- Hoặc:
+                            <button class="btn btn-primary add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
+                            --%>
                     </div>
                 </c:forEach>
             </div>
         </c:when>
         <c:otherwise>
-            <p class="no-products">No products found in this category or matching your criteria.</p>
+            <p class="no-products alert alert-info">Không tìm thấy sản phẩm nào trong danh mục này hoặc phù hợp với tiêu chí của bạn.</p>
         </c:otherwise>
     </c:choose>
 </div>
 
-<footer class="footer-placeholder">
+<footer class="footer-placeholder mt-5">
     <p>© 2025 Your Apple Store. All rights reserved.</p>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/cart.js"></script>
 </body>
 </html>

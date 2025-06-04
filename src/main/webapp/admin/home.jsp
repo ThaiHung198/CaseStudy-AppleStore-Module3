@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -9,10 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apple Store - Trang Chủ</title>
-    <%-- Link đến CSS chung của bạn --%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"> <%-- Tạo file này nếu chưa có --%>
+    <%-- Link CSS (Bootstrap và custom) --%>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <style>
-        /* CSS cơ bản cho trang chủ - bạn có thể tách ra file riêng */
+        /* CSS của bạn ... (tôi giữ nguyên phần CSS bạn đã cung cấp) */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
         .header-placeholder { background-color: #333; color: white; padding: 20px; text-align: center; }
         .header-placeholder nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
@@ -38,7 +39,6 @@
 </head>
 <body>
 
-<%-- Header (Menu Danh mục) --%>
 <header class="header-placeholder">
     <nav>
         <ul>
@@ -46,7 +46,6 @@
             <c:if test="${not empty allCategories}">
                 <c:forEach var="category" items="${allCategories}">
                     <li>
-                            <%-- Link này sẽ trỏ đến ProductListServlet với categoryId --%>
                         <a href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}">
                             <c:out value="${category.name}"/>
                         </a>
@@ -54,70 +53,65 @@
                 </c:forEach>
             </c:if>
             <li><a href="${pageContext.request.contextPath}/contact">Liên Hệ</a></li>
-            <%-- Link đến giỏ hàng (sẽ làm sau) --%>
-            <li><a href="#" id="cart-link">Giỏ Hàng (<span id="cart-count">0</span>)</a></li>
+            <li><a href="${pageContext.request.contextPath}/cart-view" id="cart-link">Giỏ Hàng (<span id="cart-count">0</span>)</a></li> <%-- Sửa href cho giỏ hàng --%>
             <li><a href="${pageContext.request.contextPath}/admin/adminLogin">Admin Login</a></li>
         </ul>
     </nav>
 </header>
 
-<%-- Banner --%>
 <section class="banner-placeholder">
     <h1>Chào mừng đến với Cửa hàng Apple của chúng tôi</h1>
     <p>Khám phá các sản phẩm và phụ kiện mới nhất của Apple.</p>
 </section>
 
 <div class="container">
-    <%-- Sản phẩm nổi bật --%>
     <c:if test="${not empty featuredProducts}">
         <section class="featured-products">
             <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
             <div class="product-grid">
                 <c:forEach var="product" items="${featuredProducts}">
                     <div class="product-card">
-                        <c:if test="${not empty product.imageUrl}">
-                            <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
-                        </c:if>
-                        <h3><c:out value="${product.name}"/></h3>
-                        <p class="price">${product.price} VND</p> <%-- Giả sử giá là VND --%>
-                            <%-- Nút "Thêm vào giỏ hàng" sẽ có JS xử lý --%>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
-                    </div>
-                    <div class="product-card">
-                        <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}"> <%-- LINK MỚI --%>
+                            <%-- Bọc ảnh và tên sản phẩm trong thẻ <a> để link đến chi tiết --%>
+                        <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" style="text-decoration: none; color: inherit;">
                             <c:if test="${not empty product.imageUrl}">
                                 <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
+                            </c:if>
+                            <c:if test="${empty product.imageUrl}">
+                                <img src="${pageContext.request.contextPath}/images/placeholder.png" alt="No image available">
                             </c:if>
                             <h3><c:out value="${product.name}"/></h3>
                         </a>
                         <p class="price">${product.price} VND</p>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
+                            <%-- Nút này bây giờ chỉ là tượng trưng, không cần JS phức tạp nếu bạn muốn CSS tĩnh cho giỏ hàng --%>
+                        <button class="add-to-cart-btn">Thêm vào giỏ (Tượng trưng)</button>
                     </div>
                 </c:forEach>
             </div>
         </section>
     </c:if>
 
+    <%-- Phần newestProducts nếu bạn muốn triển khai sau --%>
+    <%--
     <c:if test="${not empty newestProducts}">
         <section class="newest-products">
             <h2 class="section-title">Sản Phẩm Mới</h2>
-            <div class="product-grid">
-                <c:forEach var="product" items="${newestProducts}">
-                    <div class="product-card">
-                        ... (tương tự như featuredProducts) ...
-                    </div>
-                </c:forEach>
-            </div>
+            ...
         </section>
     </c:if>
+    --%>
 </div>
 
 <footer class="footer-placeholder">
     <p>© 2025 Your Apple Store. All rights reserved.</p>
 </footer>
 
-<%-- Script cho giỏ hàng (sẽ làm ở bước sau) --%>
-<script src="${pageContext.request.contextPath}/js/cart.js"></script> <%-- Tạo file này nếu chưa có --%>
+<%-- Bỏ qua cart.js nếu giỏ hàng chỉ là CSS tĩnh và không có logic JS phức tạp --%>
+<%-- <script src="${pageContext.request.contextPath}/js/cart.js"></script> --%>
+
+<%-- Bootstrap JS (nếu bạn sử dụng các component JS của Bootstrap) --%>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

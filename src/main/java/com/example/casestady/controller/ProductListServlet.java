@@ -39,35 +39,43 @@ public class ProductListServlet extends HttpServlet {
             if (categoryIdStr != null && !categoryIdStr.trim().isEmpty()) {
                 try {
                     int categoryId = Integer.parseInt(categoryIdStr);
-                    productList = productDAO.getProductsByCategoryId(categoryId);
+                    productList = productDAO.getProductsByCategoryId(categoryId); // Thử lấy sản phẩm theo category trước
                     Category currentCategory = categoryDAO.getCategoryById(categoryId);
+
                     if (currentCategory != null) {
-                        pageTitle = "Products in: " + currentCategory.getName();
+                        // Tìm thấy category
+                        pageTitle = "Sản phẩm trong danh mục: " + currentCategory.getName();
                         request.setAttribute("currentCategoryName", currentCategory.getName());
+                        if (productList.isEmpty()) {
+                            // Category tồn tại nhưng không có sản phẩm nào
+                            request.setAttribute("infoMessage", "Hiện không có sản phẩm nào trong danh mục '" + currentCategory.getName() + "'.");
+                        }
                     } else {
-                        pageTitle = "Products for Category ID: " + categoryId; // Nếu không tìm thấy tên category
-                        request.setAttribute("errorMessage", "Category not found for ID: " + categoryId + ". Showing all products.");
-                        productList = productDAO.getAllProducts(); // Dự phòng: hiển thị tất cả nếu category ID không hợp lệ
+                        // Không tìm thấy category với ID này
+                        pageTitle = "Tất cả sản phẩm"; // Đặt tiêu đề chung
+                        request.setAttribute("errorMessage", "Không tìm thấy danh mục với ID " + categoryId + ". Hiển thị tất cả sản phẩm.");
+                        productList = productDAO.getAllProducts(); // Hiển thị tất cả sản phẩm
                     }
                 } catch (NumberFormatException e) {
                     LOGGER.log(Level.WARNING, "Invalid categoryId format: " + categoryIdStr, e);
-                    request.setAttribute("errorMessage", "Invalid category ID format. Showing all products.");
+                    pageTitle = "Tất cả sản phẩm";
+                    request.setAttribute("errorMessage", "Định dạng ID danh mục không hợp lệ. Hiển thị tất cả sản phẩm.");
                     productList = productDAO.getAllProducts(); // Dự phòng
                 }
             } else {
                 // Không có categoryId, hiển thị tất cả sản phẩm
+                pageTitle = "Tất cả sản phẩm";
                 productList = productDAO.getAllProducts();
             }
 
             request.setAttribute("productList", productList);
-            request.setAttribute("pageTitle", pageTitle); // Để hiển thị tiêu đề trang động
+            request.setAttribute("pageTitle", pageTitle);
 
-            // Lấy tất cả danh mục để hiển thị menu (giống như HomeServlet)
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories);
 
-            // Forward đến trang productList.jsp (giả sử nằm ở webapp/productList.jsp)
             request.getRequestDispatcher("/productList.jsp").forward(request, response);
+
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading product list", e);
