@@ -47,16 +47,32 @@
     </style>
 </head>
 <body>
+<c:if test="${not empty sessionScope.cartMessage}">
+    <div class="container mt-3"> <%-- Sử dụng container của Bootstrap để căn lề --%>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <c:out value="${sessionScope.cartMessage}"/>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    </div>
+    <%-- Quan trọng: Xóa attribute khỏi session sau khi đã hiển thị để nó không hiện lại ở lần tải trang sau --%>
+    <c:remove var="cartMessage" scope="session"/>
+</c:if>
+
 <header class="header-placeholder">
     <nav>
         <ul>
             <li><a href="${pageContext.request.contextPath}/home">Trang Chủ</a></li>
             <c:if test="${not empty allCategories}">
                 <c:forEach var="category" items="${allCategories}">
+
                     <li>
                         <a href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}">
                             <c:out value="${category.name}"/>
                         </a>
+                        <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary">Thêm vào giỏ</a>
+
                     </li>
                 </c:forEach>
             </c:if>

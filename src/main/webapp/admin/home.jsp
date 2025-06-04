@@ -38,6 +38,18 @@
     </style>
 </head>
 <body>
+<c:if test="${not empty sessionScope.cartMessage}">
+    <div class="container mt-3"> <%-- Sử dụng container của Bootstrap để căn lề --%>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <c:out value="${sessionScope.cartMessage}"/>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    </div>
+    <%-- Quan trọng: Xóa attribute khỏi session sau khi đã hiển thị để nó không hiện lại ở lần tải trang sau --%>
+    <c:remove var="cartMessage" scope="session"/>
+</c:if>
 
 <header class="header-placeholder">
     <nav>
@@ -70,10 +82,11 @@
             <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
             <div class="product-grid">
                 <c:forEach var="product" items="${featuredProducts}">
+
                     <div class="product-card">
                             <%-- Bọc ảnh và tên sản phẩm trong thẻ <a> để link đến chi tiết --%>
-                        <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" style="text-decoration: none; color: inherit;">
-                            <c:if test="${not empty product.imageUrl}">
+                                <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}" style="text-decoration: none; color: inherit;">
+                                    <c:if test="${not empty product.imageUrl}">
                                 <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
                             </c:if>
                             <c:if test="${empty product.imageUrl}">
@@ -84,6 +97,7 @@
                         <p class="price">${product.price} VND</p>
                             <%-- Nút này bây giờ chỉ là tượng trưng, không cần JS phức tạp nếu bạn muốn CSS tĩnh cho giỏ hàng --%>
                         <button class="add-to-cart-btn">Thêm vào giỏ (Tượng trưng)</button>
+                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary">Thêm vào giỏ</a>
                     </div>
                 </c:forEach>
             </div>

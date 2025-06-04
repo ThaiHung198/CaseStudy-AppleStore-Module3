@@ -39,6 +39,18 @@
     </style>
 </head>
 <body>
+<c:if test="${not empty sessionScope.cartMessage}">
+    <div class="container mt-3"> <%-- Sử dụng container của Bootstrap để căn lề --%>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <c:out value="${sessionScope.cartMessage}"/>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    </div>
+    <%-- Quan trọng: Xóa attribute khỏi session sau khi đã hiển thị để nó không hiện lại ở lần tải trang sau --%>
+    <c:remove var="cartMessage" scope="session"/>
+</c:if>
 
 <header class="header-placeholder">
     <nav class="container">
@@ -76,10 +88,11 @@
         <c:when test="${not empty productList}">
             <div class="product-grid">
                 <c:forEach var="product" items="${productList}">
+
                     <div class="product-card">
                             <%-- THÊM LINK VÀO CHI TIẾT SẢN PHẨM --%>
-                        <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}">
-                            <c:if test="${not empty product.imageUrl}">
+                                <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}">
+                                    <c:if test="${not empty product.imageUrl}">
                                 <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}">
                             </c:if>
                             <c:if test="${empty product.imageUrl}">
@@ -90,6 +103,8 @@
                         <p class="price">${product.price} VND</p>
                             <%-- Quyết định hàm JavaScript cho nút này --%>
                         <button class="btn btn-primary add-to-cart-btn" onclick="addToCartSimple('${fn:escapeXml(product.name)}')">Thêm vào giỏ</button>
+                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary">Thêm vào giỏ</a>
+
                             <%-- Hoặc:
                             <button class="btn btn-primary add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
                             --%>
