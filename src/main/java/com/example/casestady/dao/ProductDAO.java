@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 public class ProductDAO extends DBContext {
+    private static final Logger LOGGER = Logger.getLogger(ProductDAO.class.getName());
+
     public ProductDAO() {
         super();
     }
@@ -345,5 +346,23 @@ public class ProductDAO extends DBContext {
         // Đóng kết nối nếu DBContext của bạn có phương thức close()
         // productDAO.closeConnection(); // Hoặc tương tự
         // categoryDAO.closeConnection();
+    }
+    // Trong ProductDAO.java
+    public boolean updateStockQuantity(int productId, int newStockQuantity) {
+        String sql = "UPDATE Products SET stock_quantity = ? WHERE product_id = ?";
+        try {
+            if (connection == null || connection.isClosed()) {
+                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                return false;
+            }
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, newStockQuantity);
+            ps.setInt(2, productId);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "SQL Error when updating stock quantity for product ID: " + productId, ex);
+        }
+        return false;
     }
 }

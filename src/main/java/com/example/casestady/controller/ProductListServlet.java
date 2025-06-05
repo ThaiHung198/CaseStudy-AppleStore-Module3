@@ -5,6 +5,7 @@ import com.example.casestady.dao.ProductDAO;
 import com.example.casestady.model.CartItem;
 import com.example.casestady.model.Category;
 import com.example.casestady.model.Product;
+import com.example.casestady.util.CartUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -77,17 +78,7 @@ public class ProductListServlet extends HttpServlet {
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories);
 
-            HttpSession session = request.getSession(false);
-            int totalCartItems = 0;
-            if (session != null) {
-                Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
-                if (cart != null) {
-                    for (CartItem item : cart.values()) {
-                        totalCartItems += item.getQuantity();
-                    }
-                }
-            }
-            request.setAttribute("totalCartItems", totalCartItems);
+            CartUtil.getTotalItemsInCart(request);
             request.getRequestDispatcher("/productList.jsp").forward(request, response);
 
 

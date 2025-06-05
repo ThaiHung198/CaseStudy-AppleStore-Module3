@@ -3,6 +3,7 @@ package com.example.casestady.controller; // Đảm bảo package đúng
 import com.example.casestady.model.CartItem;
 import com.example.casestady.dao.CategoryDAO; // Để lấy danh mục cho header menu
 import com.example.casestady.model.Category;  // Để lấy danh mục cho header menu
+import com.example.casestady.util.CartUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,15 +47,12 @@ public class ViewCartServlet extends HttpServlet {
             for (CartItem item : cart.values()) {
                 cartItemsList.add(item);
                 totalCartAmount = totalCartAmount.add(item.getSubtotal());
-                totalCartItems += item.getQuantity();
-
             }
         }
 
         request.setAttribute("cartItemsList", cartItemsList);
         request.setAttribute("totalCartAmount", totalCartAmount);
-        request.setAttribute("totalCartItems", totalCartItems);
-
+        CartUtil.getTotalItemsInCart(request);
         // Lấy danh sách category cho menu header
         try {
             List<Category> allCategories = categoryDAO.getAllCategories();

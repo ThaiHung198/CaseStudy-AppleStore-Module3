@@ -41,10 +41,10 @@
             margin: 0 15px;
         }
 
-        .header-placeholder nav ul li a {
-            color: white;
-            text-decoration: none;
-        }
+        /*.header-placeholder nav ul li a {*/
+        /*    color: white;*/
+        /*    text-decoration: none;*/
+        /*}*/
 
         .container {
             max-width: 900px;
@@ -162,6 +162,7 @@
             padding: 20px;
             margin-top: 30px;
         }
+
     </style>
 </head>
 <body>
