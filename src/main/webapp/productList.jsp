@@ -36,6 +36,14 @@
         .footer-placeholder { background-color: #222; color: white; text-align: center; padding: 20px; margin-top: 30px; }
         .product-card a { text-decoration: none; color: inherit; }
         .product-card a:hover h3 { color: #007bff; /* Hoặc màu khác */ }
+            /* Sửa màu chữ cho các mục trong dropdown menu của Bootstrap */
+            .dropdown-menu .dropdown-item {
+                color: #212529 !important; /* Màu chữ tối, ví dụ màu đen mặc định của Bootstrap text */
+            }
+            .dropdown-menu .dropdown-item:hover {
+                color: #16181b !important; /* Màu chữ khi hover, nếu cần */
+                background-color: #f8f9fa; /* Màu nền khi hover */
+            }
     </style>
 </head>
 <body>
@@ -53,25 +61,49 @@
 </c:if>
 
 <header class="header-placeholder">
-    <nav class="container">
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/home">Trang Chủ</a></li>
-            <c:if test="${not empty allCategories}">
-                <c:forEach var="category" items="${allCategories}">
-                    <li>
-                        <a href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}"
-                           class="${category.categoryId eq param.categoryId ? 'active' : ''}"> <%-- So sánh ID thay vì tên, và dùng param.categoryId --%>
-                            <c:out value="${category.name}"/>
-                        </a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home">AppleStore</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/home">Trang Chủ <span class="sr-only">(current)</span></a>
                     </li>
-                </c:forEach>
-            </c:if>
-            <li><a href="${pageContext.request.contextPath}/contact">Liên Hệ</a></li>
-            <li><a href="${pageContext.request.contextPath}/cart-view.jsp" id="cart-link">
-                <i class="fas fa-shopping-cart"></i> Giỏ Hàng (<span id="cart-count">0</span>)</a>
-            </li>
-            <li><a href="${pageContext.request.contextPath}/admin/adminLogin">Admin Login</a></li>
-        </ul>
+                    <%-- Menu Danh mục (hiển thị dynamic dựa trên categories) --%>
+                    <c:if test="${not empty allCategories}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Danh Mục
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
+                                <c:forEach var="category" items="${allCategories}">
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}">
+                                        <c:out value="${category.name}"/>
+                                    </a>
+                                </c:forEach>
+                            </div>
+                        </li>
+                    </c:if>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/contact">Liên Hệ</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <%-- LINK GIỎ HÀNG Ở ĐÂY --%>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/viewCart" id="cart-link">
+                                <i class="fas fa-shopping-cart"></i> Giỏ Hàng (<span id="cart-count">${not empty totalCartItems ? totalCartItems : 0}</span>)
+                            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminLogin">Admin Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -101,13 +133,7 @@
                             <h3><c:out value="${product.name}"/></h3>
                         </a>
                         <p class="price">${product.price} VND</p>
-                            <%-- Quyết định hàm JavaScript cho nút này --%>
-                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCartSimple('${fn:escapeXml(product.name)}')">Thêm vào giỏ</button>
-                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary">Thêm vào giỏ</a>
-
-                            <%-- Hoặc:
-                            <button class="btn btn-primary add-to-cart-btn" onclick="addToCart(${product.productId}, '${fn:escapeXml(product.name)}', ${product.price}, '${fn:escapeXml(product.imageUrl)}')">Thêm vào giỏ</button>
-                            --%>
+                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary add-to-cart-btn">Thêm vào giỏ</a>
                     </div>
                 </c:forEach>
             </div>
@@ -125,6 +151,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/cart.js"></script>
+<script src="${pageContext.request.contextPath}/cart.js"></script>
 </body>
 </html>

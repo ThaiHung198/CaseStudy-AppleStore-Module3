@@ -2,6 +2,7 @@ package com.example.casestady.controller; // Đảm bảo package đúng
 
 import com.example.casestady.dao.CategoryDAO;
 import com.example.casestady.dao.ProductDAO;
+import com.example.casestady.model.CartItem;
 import com.example.casestady.model.Category;
 import com.example.casestady.model.Product;
 
@@ -10,8 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,6 +77,17 @@ public class ProductListServlet extends HttpServlet {
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories);
 
+            HttpSession session = request.getSession(false);
+            int totalCartItems = 0;
+            if (session != null) {
+                Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+                if (cart != null) {
+                    for (CartItem item : cart.values()) {
+                        totalCartItems += item.getQuantity();
+                    }
+                }
+            }
+            request.setAttribute("totalCartItems", totalCartItems);
             request.getRequestDispatcher("/productList.jsp").forward(request, response);
 
 

@@ -143,4 +143,6 @@ public class AddToCartServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/home");
         }
     }
+
+
 }
