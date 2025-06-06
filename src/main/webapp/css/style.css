@@ -213,3 +213,64 @@ img {
 .table th, .table td { vertical-align: middle; }
 .total-row td { font-weight: bold; font-size: 1.2em; }
 
+/* -------------------------------------------------------------- */
+/* Admin Layout Styles */
+.sidebar {
+    position: fixed;
+    top: 56px; /* Chiều cao của navbar */
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Behind the navbar */
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    height: calc(100vh - 56px); /* Full height minus navbar */
+    overflow-y: auto; /* Scrollable sidebar */
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 0; /* Stays at the top */
+    height: 100%;
+    padding-top: .5rem;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: .75rem 1rem;
+}
+
+.sidebar .nav-link .fas { /* Font Awesome icons in sidebar */
+    margin-right: 8px;
+    width: 16px; /* Align icons */
+    text-align: center;
+}
+
+.sidebar .nav-link.active {
+    color: #007bff;
+    background-color: #e9ecef;
+}
+
+.sidebar .nav-link:hover {
+    color: #0056b3;
+    background-color: #f8f9fa;
+}
+
+/* Main content area for admin pages */
+.admin-main-content {
+    padding-top: 15px; /* Space below navbar */
+    /* margin-left điều chỉnh dựa trên chiều rộng sidebar */
+}
+
+/* Khi sidebar hiển thị (màn hình md trở lên) */
+@media (min-width: 768px) {
+    .admin-main-content {
+        margin-left: calc(16.66666667% + 15px); /* col-md-2 width + padding */
+        /* Hoặc nếu bạn dùng col-md-3 cho sidebar thì là calc(25% + 15px) */
+        /* Nếu sidebar là col-lg-2 thì là calc(16.66666667% + 15px) cho màn hình lg */
+    }
+    #adminSidebar.col-lg-2 { /* Nếu bạn muốn sidebar là col-lg-2 */
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
+    }
+}
