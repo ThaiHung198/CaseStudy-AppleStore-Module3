@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -52,32 +54,51 @@ public class HomeServlet extends HttpServlet {
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories);
 
-            // (Tùy chọn) Lấy một vài sản phẩm mới nhất hoặc tất cả sản phẩm (có thể cần phân trang sau)
-            // Ví dụ: Lấy 8 sản phẩm mới nhất (giả sử ProductDAO có hàm getNewestProducts(limit))
-//             List<Product> newestProducts = productDAO.getNewestProducts(8);
-//             request.setAttribute("newestProducts", newestProducts);
+            Map<Category, List<Product>> productsByCategoryForHome = new HashMap<>();
+            int productsPerCategoryLimit = 4; // Giới hạn số sản phẩm hiển thị cho mỗi category
+
+            if (allCategories != null) {
+                for (Category category : allCategories) {
+                    // Lấy sản phẩm theo categoryId, bạn cần một hàm trong ProductDAO
+                    // có thể nhận thêm tham số limit hoặc bạn tự giới hạn trong JSP
+                    List<Product> catProducts = productDAO.getProductsByCategoryId(category.getCategoryId()); // Sửa category.getId() thành category.getCategoryId()
+
+                    // Nếu muốn giới hạn ở đây thay vì JSP:
+                    List<Product> limitedCatProducts = new ArrayList<>();
+                    if (catProducts != null) {
+                        for (int i = 0; i < catProducts.size() && i < productsPerCategoryLimit; i++) {
+                            limitedCatProducts.add(catProducts.get(i));
+                        }
+                    }
+                    productsByCategoryForHome.put(category, limitedCatProducts);
+                }
+            }
+            request.setAttribute("productsByCategoryForHome", productsByCategoryForHome);
+
+            request.setAttribute("productsByCategoryForHome", productsByCategoryForHome);
+
             // Hoặc lấy tất cả (cẩn thận nếu số lượng lớn)
-             List<Product> allProducts = productDAO.getAllProducts();
-             request.setAttribute("allProducts", allProducts);
+                    List<Product> allProducts = productDAO.getAllProducts();
+                    request.setAttribute("allProducts", allProducts);
 
-            CartUtil.getTotalItemsInCart(request);
-            request.getRequestDispatcher("admin/home.jsp").forward(request, response);
+                    CartUtil.getTotalItemsInCart(request);
+                    request.getRequestDispatcher("admin/home.jsp").forward(request, response);
 
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error loading data for home page", e);
-            // Có thể chuyển hướng đến một trang lỗi chung
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.");
-        }
-    }
+                } catch(Exception e){
+                    LOGGER.log(Level.SEVERE, "Error loading data for home page", e);
+                    // Có thể chuyển hướng đến một trang lỗi chung
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.");
+                }
+            }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            @Override
+            protected void doPost (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
+                request.setCharacterEncoding("UTF-8");
+                response.setContentType("text/html; charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
 
-        // Trang chủ thường không xử lý POST, có thể redirect về GET hoặc báo lỗi
-        doGet(request, response);
-    }
-}
+                // Trang chủ thường không xử lý POST, có thể redirect về GET hoặc báo lỗi
+                doGet(request, response);
+            }
+        }

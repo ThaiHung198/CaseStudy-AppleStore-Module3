@@ -13,20 +13,50 @@
 </head>
 <body>
 <%-- Header Menu --%>
-<header class="header-placeholder">
-    <nav class="container">
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/home">Trang Chủ</a></li>
-            <%-- Không cần hiển thị allCategories ở đây nếu không muốn, hoặc cần servlet riêng --%>
-            <li><a href="${pageContext.request.contextPath}/contact">Liên Hệ</a></li>
-            <li><a href="${pageContext.request.contextPath}/viewCart" id="cart-link">
-                <i class="fas fa-shopping-cart"></i> Giỏ Hàng (<span id="cart-count">${not empty totalCartItems ? totalCartItems : 0}</span>)</a>
-                <%-- totalCartItems sẽ là 0 sau khi checkout thành công --%>
-            </li>
-            <li><a href="${pageContext.request.contextPath}/admin/adminLogin">Admin Login</a></li>
-        </ul>
+<header class="header-placeholder"> <%-- Bạn có thể bỏ class này nếu không cần style riêng cho header nữa --%>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"> <%-- fixed-top để navbar luôn ở trên cùng --%>
+        <div class="container">
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
+                <i class="fab fa-apple"></i> <%-- ICON APPLE --%>
+                AppleStore
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ${pageContext.request.servletPath eq '/home' ? 'active' : ''}"><a class="nav-link" href="${pageContext.request.contextPath}/home">Trang Chủ</a></li>
+                    <c:if test="${not empty allCategories}">
+                        <li class="nav-item dropdown ${(pageContext.request.servletPath eq '/products' and not empty param.categoryId) ? 'active' : ''}">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Danh Mục
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
+                                <c:forEach var="category" items="${allCategories}">
+                                    <a class="dropdown-item ${category.categoryId eq param.categoryId ? 'active' : ''}" href="${pageContext.request.contextPath}/products?categoryId=${category.categoryId}"><c:out value="${category.name}"/></a>
+                                </c:forEach>
+                            </div>
+                        </li>
+                    </c:if>
+                    <li class="nav-item ${pageContext.request.servletPath eq '/contact' ? 'active' : ''}"><a class="nav-link" href="${pageContext.request.contextPath}/contact">Liên Hệ</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item ${pageContext.request.servletPath eq '/viewCart' or pageContext.request.servletPath eq '/cart-view.jsp' ? 'active' : ''}">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/viewCart" id="cart-link">
+                            <i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">Giỏ Hàng</span> (<span id="cart-count">${not empty totalCartItems ? totalCartItems : 0}</span>)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminLogin">
+                            <i class="fas fa-user-shield"></i> <span class="d-none d-md-inline">Admin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 </header>
+<div style="padding-top: 56px;"></div> <%-- Thêm khoảng đệm nếu dùng navbar fixed-top --%>
 
 <div class="container mt-5 text-center">
     <c:choose>
