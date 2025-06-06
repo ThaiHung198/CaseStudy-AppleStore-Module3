@@ -1,7 +1,8 @@
-package com.example.casestady.dao; // Đảm bảo package đúng
+package com.example.casestady.dao;
 
 import com.example.casestady.model.Order;
-import com.example.casestady.model.OrderDetail; // Cần nếu bạn muốn load cả details
+import com.example.casestady.model.OrderDetail;
+import com.example.casestady.model.AdminOrderItemView;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class OrderDAO extends DBContext {
 
     /**
      * Thêm một đơn hàng mới vào CSDL và trả về ID của đơn hàng đó.
+     *
      * @param order Đối tượng Order chứa thông tin đơn hàng (ngoại trừ orderId và orderDate)
      * @return order_id của đơn hàng mới được tạo, hoặc -1 nếu thất bại.
      */
@@ -61,7 +63,7 @@ public class OrderDAO extends DBContext {
             ps.setString(4, order.getShippingAddress());
             ps.setBigDecimal(5, order.getTotalAmount());
             ps.setString(6, order.getNotes());
-            if (order.getStatus() != null && !order.getStatus().isEmpty()){
+            if (order.getStatus() != null && !order.getStatus().isEmpty()) {
                 ps.setString(7, order.getStatus());
             }
 
@@ -81,6 +83,7 @@ public class OrderDAO extends DBContext {
 
     /**
      * Lấy tất cả đơn hàng, sắp xếp theo ngày đặt hàng mới nhất trước.
+     *
      * @return Danh sách các đối tượng Order.
      */
     public List<Order> getAllOrders() {
@@ -108,6 +111,7 @@ public class OrderDAO extends DBContext {
 
     /**
      * Lấy một đơn hàng cụ thể bằng order_id.
+     *
      * @param orderId ID của đơn hàng.
      * @return Đối tượng Order nếu tìm thấy, bao gồm cả chi tiết đơn hàng, ngược lại null.
      */
@@ -135,7 +139,8 @@ public class OrderDAO extends DBContext {
 
     /**
      * Cập nhật trạng thái của một đơn hàng.
-     * @param orderId ID của đơn hàng cần cập nhật.
+     *
+     * @param orderId   ID của đơn hàng cần cập nhật.
      * @param newStatus Trạng thái mới.
      * @return true nếu cập nhật thành công, false nếu thất bại.
      */
@@ -158,5 +163,33 @@ public class OrderDAO extends DBContext {
         return false;
     }
 
-    // Bạn có thể thêm các phương thức khác nếu cần, ví dụ: getOrdersByCustomerId (nếu có userId), deleteOrder, v.v.
+    public List<AdminOrderItemView> getAllOrderItemsForAdminView() {
+        List<AdminOrderItemView> orderItems = new ArrayList<>();
+        String sql = "SELECT o.order_id, o.order_date, p.name AS product_name, od.quantity, od.price_at_purchase " +
+                "FROM Orders o " +
+                "JOIN OrderDetails od ON o.order_id = od.order_id " +
+                "JOIN Products p ON od.product_id = p.product_id " +
+                "ORDER BY o.order_date DESC, o.order_id DESC, p.name ASC";
+        try {
+            if (connection == null || connection.isClosed()) {
+                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                return orderItems;
+            }
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                AdminOrderItemView item = new AdminOrderItemView();
+                item.setOrderId(rs.getInt("order_id"));
+                item.setOrderDate(rs.getTimestamp("order_date"));
+                item.setProductName(rs.getString("product_name"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setPriceAtPurchase(rs.getBigDecimal("price_at_purchase"));
+                // Set các trường tùy chọn khác nếu bạn thêm vào AdminOrderItemView và câu SQL
+                orderItems.add(item);
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "SQL Error when fetching all order items for admin view", ex);
+        }
+        return orderItems;
+    }
 }
