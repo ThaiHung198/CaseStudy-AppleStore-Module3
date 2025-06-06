@@ -59,7 +59,7 @@
 <body>
 <div class="container">
     <h1>Quản lý sản phẩm</h1>
-    <p><a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp">Back to Dashboard</a></p>
+    <p><a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp">Quay lại Trang tổng quan</a></p>
 
     <c:if test="${not empty sessionScope.successMessage}">
         <p class="message success-message">${sessionScope.successMessage}</p>
@@ -134,18 +134,18 @@
     </c:if>
 
     <c:if test="${not empty productList}">
-        <h2>Existing Products</h2>
+        <h2>Sản phẩm hiện có</h2>
         <table>
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Featured</th>
-                <th>Actions</th>
+                <th>Ảnh</th>
+                <th>Tên</th>
+                <th>Loại</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Nổi bật</th>
+                <th>Hành Động</th>
             </tr>
             </thead>
             <tbody>
@@ -168,11 +168,11 @@
                     </td>
                     <td><c:out value="${product.price}"/></td>
                     <td>${product.stockQuantity}</td>
-                    <td>${product.isFeatured() ? 'Yes' : 'No'}</td>
+                    <td>${product.isFeatured() ? '<span class="badge badge-success">Có</span>' : '<span class="badge badge-secondary">Không</span>'}</td>
                     <td class="actions">
-                        <a href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}" class="edit-btn">Edit</a>
+                        <a href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}" class="edit-btn">Sửa</a>
                         <a href="${pageContext.request.contextPath}/admin/manageProducts?action=delete&id=${product.productId}"
-                           onclick="return confirm('Are you sure you want to delete this product?');" class="delete-btn">Delete</a>
+                           onclick="return confirm('Are you sure you want to delete this product?');" class="delete-btn">Xóa</a>
                     </td>
                 </tr>
             </c:forEach>

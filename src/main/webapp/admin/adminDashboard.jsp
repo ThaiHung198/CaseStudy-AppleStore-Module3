@@ -27,38 +27,37 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 admin-main-content">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">TRANG QUẢN LÝ</h1>
+                <h1 class="h2">Danh Mục Quản Lý</h1>
             </div>
 
-            <p>Welcome, <strong><c:out value="${sessionScope.adminLoggedIn.userName}"/></strong>!</p>
-            <p>This is your admin control panel. Use the sidebar to navigate to different management sections.</p>
+            <p>Chào mừng, <strong><c:out value="${sessionScope.adminLoggedIn.userName}"/></strong>!</p>
+            <p>Đây là bảng điều khiển quản trị của bạn. Sử dụng thanh bên để điều hướng đến các phần quản lý khác nhau.</p>
 
-            <%-- Có thể thêm các widget hoặc thông tin tóm tắt ở đây --%>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Total Categories</h5>
+                            <h5 class="card-title">Tổng số danh mục</h5>
                             <p class="card-text">XX</p> <%-- Sẽ lấy từ DB sau --%>
-                            <a href="${pageContext.request.contextPath}/admin/manageCategories" class="btn btn-primary">Manage</a>
+                            <a href="${pageContext.request.contextPath}/admin/manageCategories" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Total Products</h5>
+                            <h5 class="card-title">Tổng số sản phẩm</h5>
                             <p class="card-text">YY</p> <%-- Sẽ lấy từ DB sau --%>
-                            <a href="${pageContext.request.contextPath}/admin/manageProducts" class="btn btn-primary">Manage</a>
+                            <a href="${pageContext.request.contextPath}/admin/manageProducts" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Pending Orders</h5>
+                            <h5 class="card-title">Lệnh chờ xử lý</h5>
                             <p class="card-text">ZZ</p> <%-- Sẽ lấy từ DB sau --%>
-                            <a href="${pageContext.request.contextPath}/admin/viewOrders" class="btn btn-primary">View</a>
+                            <a href="${pageContext.request.contextPath}/admin/viewOrders" class="btn btn-primary">Xem</a>
                         </div>
                     </div>
                 </div>

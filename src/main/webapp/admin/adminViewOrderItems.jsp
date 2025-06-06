@@ -27,7 +27,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 admin-main-content">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Ordered Items List</h1>
+                <h1 class="h2">Danh sách hóa đơn</h1>
             </div>
 
             <c:if test="${not empty requestScope.errorMessage}">
@@ -38,12 +38,12 @@
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Order Date</th>
-                        <th>Product Name</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-right">Price at Purchase</th>
-                        <th class="text-right">Item Subtotal</th>
+                        <th>ID Hóa Đơn</th>
+                        <th>Ngày Đặt Hàng</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th class="text-center">Số Lượng</th>
+                        <th class="text-right">Giá lúc mua</th>
+                        <th class="text-right">Tổng Hóa Đơn</th>
                     </tr>
                     </thead>
                     <tbody>
