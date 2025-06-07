@@ -38,7 +38,7 @@ public class ProductDetailServlet extends HttpServlet {
         try {
             String productIdStr = request.getParameter("id");
             if (productIdStr == null || productIdStr.trim().isEmpty()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is missing.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID sản phẩm bị thiếu.");
                 return;
             }
 
@@ -46,7 +46,7 @@ public class ProductDetailServlet extends HttpServlet {
             Product product = productDAO.getProductById(productId);
 
             if (product == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found.");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy sản phẩm.");
                 return;
             }
 
@@ -64,10 +64,10 @@ public class ProductDetailServlet extends HttpServlet {
             request.getRequestDispatcher("/productDetail.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.WARNING, "Invalid product ID format", e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Product ID format.");
+            LOGGER.log(Level.WARNING, "Định dạng ID sản phẩm không hợp lệ", e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Định dạng ID sản phẩm không hợp lệ.");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error loading product detail", e);
+            LOGGER.log(Level.SEVERE, "Lỗi tải chi tiết sản phẩm", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
         }
     }

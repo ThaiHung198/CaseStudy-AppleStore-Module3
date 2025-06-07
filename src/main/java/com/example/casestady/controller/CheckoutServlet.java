@@ -57,9 +57,6 @@ public class CheckoutServlet extends HttpServlet {
         List<CartItem> cartItemsListForCheckout = new ArrayList<>(cart.values());
         BigDecimal totalCartAmountForCheckout = BigDecimal.ZERO;
         for (CartItem item : cartItemsListForCheckout) {
-            // Cập nhật lại giá sản phẩm từ DB để đảm bảo giá mới nhất (tùy chọn)
-            // Product currentProductInfo = productDAO.getProductById(item.getProduct().getProductId());
-            // if(currentProductInfo != null) item.getProduct().setPrice(currentProductInfo.getPrice());
             totalCartAmountForCheckout = totalCartAmountForCheckout.add(item.getSubtotal());
         }
 

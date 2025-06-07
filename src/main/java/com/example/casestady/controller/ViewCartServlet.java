@@ -58,7 +58,7 @@ public class ViewCartServlet extends HttpServlet {
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories); // Dùng tên nhất quán với các servlet khác
         } catch (Exception e) {
-            LOGGER.warning("Could not load categories for cart page header: " + e.getMessage());
+            LOGGER.warning("Không thể tải danh mục cho tiêu đề trang giỏ hàng: " + e.getMessage());
         }
 
         // Forward đến trang cart.jsp (giả sử nằm ở webapp/cart.jsp)

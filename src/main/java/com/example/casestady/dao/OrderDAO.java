@@ -53,7 +53,7 @@ public class OrderDAO extends DBContext {
 
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return -1;
             }
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -76,7 +76,7 @@ public class OrderDAO extends DBContext {
                 }
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when adding order", ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi thêm đơn hàng", ex);
         }
         return -1; // Thêm thất bại
     }
@@ -91,7 +91,7 @@ public class OrderDAO extends DBContext {
         String sql = "SELECT * FROM Orders ORDER BY order_date DESC";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return orders;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -104,7 +104,7 @@ public class OrderDAO extends DBContext {
                 orders.add(order);
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when fetching all orders", ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi lấy tất cả các đơn hàng", ex);
         }
         return orders;
     }
@@ -119,7 +119,7 @@ public class OrderDAO extends DBContext {
         String sql = "SELECT * FROM Orders WHERE order_id = ?";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return null;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -132,7 +132,7 @@ public class OrderDAO extends DBContext {
                 return order;
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when fetching order by ID: " + orderId, ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi lấy thứ tự theo ID: " + orderId, ex);
         }
         return null;
     }
@@ -149,7 +149,7 @@ public class OrderDAO extends DBContext {
         // CSDL sẽ tự động cập nhật updated_at nếu bảng Orders có cột đó với ON UPDATE CURRENT_TIMESTAMP
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return false;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -158,7 +158,7 @@ public class OrderDAO extends DBContext {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when updating order status for order ID: " + orderId, ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi cập nhật trạng thái đơn hàng cho ID đơn hàng: " + orderId, ex);
         }
         return false;
     }
@@ -172,7 +172,7 @@ public class OrderDAO extends DBContext {
                 "ORDER BY o.order_date DESC, o.order_id DESC, p.name ASC";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return orderItems;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -188,7 +188,7 @@ public class OrderDAO extends DBContext {
                 orderItems.add(item);
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when fetching all order items for admin view", ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi lấy tất cả các mục đơn hàng cho chế độ xem quản trị", ex);
         }
         return orderItems;
     }

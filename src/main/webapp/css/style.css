@@ -274,3 +274,178 @@ img {
         max-width: 16.666667%;
     }
 }
+/*----------manageProducts--------------*/
+ body {
+     font-family: Arial, sans-serif;
+     margin: 20px;
+     background-color: #f8f9fa;
+ }
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #e9ecef;
+}
+
+.actions a {
+    margin-right: 5px;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: black;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.add-btn-container {
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.form-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container input[type="url"],
+.form-container textarea,
+.form-container select {
+    width: calc(100% - 22px);
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-container textarea {
+    min-height: 70px;
+}
+
+.form-container input[type="checkbox"] {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.form-container input[type="submit"], .form-container .cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.form-container input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.form-container .cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message-jsp {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.product-image-thumbnail {
+    max-width: 50px;
+    max-height: 50px;
+}
+/*------------Css header chung----------*/
+.admin-main-content .card-header .card-title {
+    font-size: 1.5rem; /* Kích thước tiêu đề trong card admin */
+}
+.admin-main-content .card-header .btn-link { /* Cho nút back */
+    font-size: 1.2rem;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Style cho Form trong Admin (nếu muốn tùy chỉnh thêm ngoài Bootstrap) */
+.admin-main-content .form-container {
+    /* Có thể thêm style riêng nếu Bootstrap chưa đủ */
+}
+
+/* Style cho Bảng trong Admin */
+.admin-main-content .table th {
+    font-weight: 600; /* Chữ đậm hơn cho header bảng */
+}
+.admin-main-content .table .product-image-thumbnail { /* Class này có thể không còn dùng nếu dùng style inline */
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+/* Style cho các nút actions trong bảng Admin */
+.admin-main-content .table .btn-sm i {
+    /* Có thể điều chỉnh kích thước icon nếu cần */
+}

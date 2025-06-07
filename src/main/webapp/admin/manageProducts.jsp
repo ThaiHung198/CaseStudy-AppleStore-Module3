@@ -1,13 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: thaih
-  Date: 03/06/2025
-  Time: 1:45 CH
-  To change this template use File | Settings | File Templates.
---%>
+<%-- File: webapp/admin/manageProducts.jsp --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <c:if test="${empty sessionScope.adminLoggedIn}">
     <c:redirect url="${pageContext.request.contextPath}/admin/adminLogin.jsp"/>
@@ -16,179 +12,194 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>${not empty pageTitle ? pageTitle : 'Quản lý Sản phẩm'} - Admin</title>
+    <%-- Link Bootstrap và Font Awesome --%>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Tùy chọn cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <%-- Giả sử bạn dùng Font Awesome 5 --%>
+    <%-- Link đến file CSS tùy chỉnh của bạn --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <title>${not empty pageTitle ? pageTitle : 'Manage Products'} - Admin</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f8f9fa; }
-        .container { max-width: 1000px; margin: auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9em; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #e9ecef; }
-        .actions a { margin-right: 5px; text-decoration: none; padding: 4px 8px; border-radius: 3px; font-size: 0.9em;}
-        .edit-btn { background-color: #ffc107; color: black; }
-        .delete-btn { background-color: #dc3545; color: white; }
-        .add-btn-container { margin-bottom: 20px; }
-        .add-btn { padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
-
-        .form-container { border: 1px solid #ccc; padding: 20px; margin-top: 20px; border-radius: 5px; background-color: #f9f9f9;}
-        .form-container label { display: block; margin-bottom: 6px; font-weight: bold;}
-        .form-container input[type="text"],
-        .form-container input[type="number"],
-        .form-container input[type="url"],
-        .form-container textarea,
-        .form-container select {
-            width: calc(100% - 22px); padding: 8px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
-        }
-        .form-container textarea { min-height: 70px; }
-        .form-container input[type="checkbox"] { margin-right: 5px; vertical-align: middle; }
-        .form-container input[type="submit"], .form-container .cancel-btn {
-            padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;
-        }
-        .form-container input[type="submit"] { background-color: #28a745; color: white; }
-        .form-container .cancel-btn { background-color: #6c757d; color: white; text-decoration: none; display: inline-block; }
-
-        .message { padding: 10px; margin-bottom: 15px; border-radius: 4px; }
-        .success-message { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .error-message-jsp { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .product-image-thumbnail { max-width: 50px; max-height: 50px; }
-    </style>
 </head>
-<body>
-<div class="container">
-    <h1>Quản lý sản phẩm</h1>
-    <p><a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp">Quay lại Trang tổng quan</a></p>
+<body class="d-flex flex-column min-vh-100"> <%-- Giúp footer ở cuối nếu trang ngắn --%>
 
-    <c:if test="${not empty sessionScope.successMessage}">
-        <p class="message success-message">${sessionScope.successMessage}</p>
-        <c:remove var="successMessage" scope="session"/>
-    </c:if>
-    <c:if test="${not empty sessionScope.errorMessage}">
-        <p class="message error-message-jsp">${sessionScope.errorMessage}</p>
-        <c:remove var="errorMessage" scope="session"/>
-    </c:if>
-    <c:if test="${not empty requestScope.errorMessage}">
-        <p class="message error-message-jsp">${requestScope.errorMessage}</p>
-    </c:if>
+<jsp:include page="/admin/includes/admin_header.jsp" />
 
-    <c:if test="${empty param.action or param.action eq 'list'}">
-        <div class="add-btn-container">
-            <a href="${pageContext.request.contextPath}/admin/manageProducts?action=add" class="add-btn">Thêm Sản Phẩm Mới</a>
-        </div>
-    </c:if>
+<div class="container-fluid">
+    <div class="row">
+        <jsp:include page="/admin/includes/admin_sidebar.jsp" />
 
-    <c:if test="${param.action eq 'add' or not empty productToEdit}">
-        <div class="form-container">
-            <h2>${not empty pageTitle ? pageTitle : (not empty productToEdit ? 'Edit Product' : 'Add New Product')}</h2>
-            <form action="${pageContext.request.contextPath}/admin/manageProducts" method="post">
-                <input type="hidden" name="action" value="${not empty productToEdit ? 'update' : 'add'}">
-                <c:if test="${not empty productToEdit}">
-                    <input type="hidden" name="productId" value="${productToEdit.productId}">
-                </c:if>
-
-                <div>
-                    <label for="productName">Tên Sản Phẩm:</label>
-                    <input type="text" id="productName" name="productName" value="${fn:escapeXml(not empty productToEdit ? productToEdit.name : param.productName)}" required>
-                </div>
-                <div>
-                    <label for="productDescription">Miêu Tả Sản Phẩm:</label>
-                    <textarea id="productDescription" name="productDescription">${fn:escapeXml(not empty productToEdit ? productToEdit.description : param.productDescription)}</textarea>
-                </div>
-                <div>
-                    <label for="productPrice">Giá Sản Phẩm:</label>
-                    <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" value="${not empty productToEdit ? productToEdit.price : param.productPrice}" required>
-                </div>
-                <div>
-                    <label for="categoryId">Loại:</label>
-                    <select id="categoryId" name="categoryId" required>
-                        <option value="">-- Select Category --</option>
-                        <c:forEach var="category" items="${categoryListForForm}">
-                            <option value="${category.categoryId}" ${ (not empty productToEdit and productToEdit.categoryId == category.categoryId) or (not empty param.categoryId and param.categoryId == category.categoryId) ? 'selected' : ''}>
-                                <c:out value="${category.name}"/>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div>
-                    <label for="stockQuantity">Số Lượng Hàng Tồn Kho:</label>
-                    <input type="number" id="stockQuantity" name="stockQuantity" min="0" value="${not empty productToEdit ? productToEdit.stockQuantity : (not empty param.stockQuantity ? param.stockQuantity : 0)}" required>
-                </div>
-                <div>
-                    <label for="imageUrl">Image URL:</label>
-                    <input type="url" id="imageUrl" name="imageUrl" value="${fn:escapeXml(not empty productToEdit ? productToEdit.imageUrl : param.imageUrl)}">
-                </div>
-                <div>
-                    <label for="isFeatured">
-                        <input type="checkbox" id="isFeatured" name="isFeatured" ${ (not empty productToEdit and productToEdit.isFeatured()) or (not empty param.isFeatured and param.isFeatured eq 'on') ? 'checked' : ''}>
-                        Được Nổi bật?
-                    </label>
-                </div>
-                <div>
-                    <input type="submit" value="${not empty productToEdit ? 'Update Product' : 'Thêm'}">
-                    <a href="${pageContext.request.contextPath}/admin/manageProducts?action=list" class="cancel-btn">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </c:if>
-
-    <c:if test="${not empty productList}">
-        <h2>Sản phẩm hiện có</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Ảnh</th>
-                <th>Tên</th>
-                <th>Loại</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Nổi bật</th>
-                <th>Hành Động</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="product" items="${productList}">
-                <tr>
-                    <td>${product.productId}</td>
-                    <td>
-                        <c:if test="${not empty product.imageUrl}">
-                            <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}" class="product-image-thumbnail">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 admin-main-content">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4 class="card-title d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp" class="btn btn-link text-secondary p-0 mr-2" title="Quay lại Dashboard">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                            Quản lý sản phẩm
+                        </div>
+                        <c:if test="${empty param.action or param.action eq 'list'}">
+                            <a href="${pageContext.request.contextPath}/admin/manageProducts?action=add" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Thêm mới
+                            </a>
                         </c:if>
-                    </td>
-                    <td><c:out value="${product.name}"/></td>
-                    <td>
-                            <%-- Tìm tên category từ categoryListAll (truyền từ servlet) --%>
-                        <c:forEach var="cat" items="${categoryListAll}">
-                            <c:if test="${cat.categoryId == product.categoryId}">
-                                <c:out value="${cat.name}"/>
-                            </c:if>
-                        </c:forEach>
-                    </td>
-                    <td><c:out value="${product.price}"/></td>
-                    <td>${product.stockQuantity}</td>
-                    <td>${product.isFeatured() ? '<span class="badge badge-success">Có</span>' : '<span class="badge badge-secondary">Không</span>'}</td>
-                    <td class="actions">
-                        <a href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}" class="edit-btn">Sửa</a>
-                        <a href="${pageContext.request.contextPath}/admin/manageProducts?action=delete&id=${product.productId}"
-                           onclick="return confirm('Are you sure you want to delete this product?');" class="delete-btn">Xóa</a>
-                    </td>
-                </tr>
-            </c:forEach>
-            <c:if test="${empty productList}">
-                <tr>
-                    <td colspan="8">No products found.</td>
-                </tr>
-            </c:if>
-            </tbody>
-        </table>
-    </c:if>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <%-- Hiển thị thông báo --%>
+                    <c:if test="${not empty sessionScope.successMessage}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                ${sessionScope.successMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <c:remove var="successMessage" scope="session"/>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.errorMessage}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ${sessionScope.errorMessage}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <c:remove var="errorMessage" scope="session"/>
+                    </c:if>
+                    <c:if test="${not empty requestScope.errorMessage}">
+                        <div class="alert alert-danger">${requestScope.errorMessage}</div>
+                    </c:if>
+
+                    <%-- Form Thêm mới hoặc Sửa Product --%>
+                    <c:if test="${param.action eq 'add' or not empty productToEdit}">
+                        <div class="form-container border p-3 mb-4 bg-light rounded">
+                            <h2>${not empty pageTitle ? pageTitle : (not empty productToEdit ? 'Chỉnh sửa Sản phẩm' : 'Thêm Sản phẩm mới')}</h2>
+                            <form action="${pageContext.request.contextPath}/admin/manageProducts" method="post">
+                                <input type="hidden" name="action" value="${not empty productToEdit ? 'update' : 'add'}">
+                                <c:if test="${not empty productToEdit}">
+                                    <input type="hidden" name="productId" value="${productToEdit.productId}">
+                                </c:if>
+
+                                <div class="form-group">
+                                    <label for="productName">Tên Sản Phẩm:</label>
+                                    <input type="text" id="productName" name="productName" class="form-control" value="${fn:escapeXml(not empty productToEdit ? productToEdit.name : param.productName)}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productDescription">Mô tả:</label>
+                                    <textarea id="productDescription" name="productDescription" class="form-control" rows="3">${fn:escapeXml(not empty productToEdit ? productToEdit.description : param.productDescription)}</textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="productPrice">Giá:</label>
+                                        <input type="number" id="productPrice" name="productPrice" class="form-control" step="0.01" min="0" value="${not empty productToEdit ? productToEdit.price : param.productPrice}" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="categoryId">Danh mục:</label>
+                                        <select id="categoryId" name="categoryId" class="form-control" required>
+                                            <option value="">-- Chọn Danh mục --</option>
+                                            <c:forEach var="category" items="${categoryListForForm}">
+                                                <option value="${category.categoryId}" ${ (not empty productToEdit and productToEdit.categoryId == category.categoryId) or (not empty param.categoryId and param.categoryId == category.categoryId) ? 'selected' : ''}>
+                                                    <c:out value="${category.name}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="stockQuantity">Số lượng tồn kho:</label>
+                                        <input type="number" id="stockQuantity" name="stockQuantity" class="form-control" min="0" value="${not empty productToEdit ? productToEdit.stockQuantity : (not empty param.stockQuantity ? param.stockQuantity : 0)}" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="imageUrl">URL Hình ảnh:</label>
+                                        <input type="url" id="imageUrl" name="imageUrl" class="form-control" value="${fn:escapeXml(not empty productToEdit ? productToEdit.imageUrl : param.imageUrl)}">
+                                    </div>
+                                </div>
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${ (not empty productToEdit and productToEdit.isFeatured()) or (not empty param.isFeatured and param.isFeatured eq 'on') ? 'checked' : ''}>
+                                    <label class="form-check-label" for="isFeatured">Là sản phẩm nổi bật?</label>
+                                </div>
+                                <button type="submit" class="btn btn-success">${not empty productToEdit ? 'Cập nhật' : 'Thêm Sản phẩm'}</button>
+                                <a href="${pageContext.request.contextPath}/admin/manageProducts?action=list" class="btn btn-secondary">Hủy</a>
+                            </form>
+                        </div>
+                    </c:if>
+
+                    <%-- Danh sách Products --%>
+                    <c:if test="${not empty productList}">
+                        <h2 class="mt-4">Danh sách sản phẩm hiện có</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Ảnh</th>
+                                    <th>Tên</th>
+                                    <th>Danh mục</th>
+                                    <th class="text-right">Giá</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Nổi bật</th>
+                                    <th class="text-center">Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="product" items="${productList}">
+                                    <tr>
+                                        <td class="text-center">${product.productId}</td>
+                                        <td class="text-center">
+                                            <c:if test="${not empty product.imageUrl}">
+                                                <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}"
+                                                     style="width:50px; height:auto; object-fit: contain;">
+                                            </c:if>
+                                            <c:if test="${empty product.imageUrl}">
+                                                <img src="${pageContext.request.contextPath}/images/placeholder.png" alt="No image"
+                                                     style="width:50px; height:auto; object-fit: contain;">
+                                            </c:if>
+                                        </td>
+                                        <td><c:out value="${product.name}"/></td>
+                                        <td>
+                                            <c:forEach var="cat" items="${categoryListAll}">
+                                                <c:if test="${cat.categoryId == product.categoryId}">
+                                                    <c:out value="${cat.name}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                        </td>
+                                        <td class="text-right"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="" minFractionDigits="0" maxFractionDigits="0"/> VND</td>
+                                        <td class="text-center">${product.stockQuantity}</td>
+                                        <td class="text-center">
+                                            <c:if test="${product.isFeatured()}"><span class="badge badge-success">Có</span></c:if>
+                                            <c:if test="${not product.isFeatured()}"><span class="badge badge-secondary">Không</span></c:if>
+                                        </td>
+                                        <td class="text-center">
+                                            <a title="Sửa"
+                                               href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}"
+                                               class="btn btn-sm btn-info mr-1">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a title="Xóa"
+                                               href="${pageContext.request.contextPath}/admin/manageProducts?action=delete&id=${product.productId}"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');"
+                                               class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <c:if test="${empty productList}">
+                                    <tr>
+                                        <td colspan="8" class="text-center">Không tìm thấy sản phẩm nào.</td>
+                                    </tr>
+                                </c:if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:if>
+                </div> <%-- end card-body --%>
+            </div> <%-- end card --%>
+        </main>
+    </div>
 </div>
+
+<%-- <jsp:include page="/admin/includes/admin_footer.jsp" /> --%>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/cart.js"></script>
 </body>
 </html>
-

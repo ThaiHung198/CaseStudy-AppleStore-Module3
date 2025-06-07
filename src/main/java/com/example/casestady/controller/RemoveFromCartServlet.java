@@ -44,10 +44,10 @@ public class RemoveFromCartServlet extends HttpServlet {
                     cartActionMessage = "Lỗi: Sản phẩm không tìm thấy trong giỏ hàng để xóa.";
                 }
             } catch (NumberFormatException e) {
-                LOGGER.log(Level.WARNING, "Invalid format for productId for removal", e);
+                LOGGER.log(Level.WARNING, "Định dạng không hợp lệ cho ID của sản phẩm để xóa", e);
                 cartActionMessage = "Lỗi: Định dạng ID sản phẩm không hợp lệ.";
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error removing item from cart", e);
+                LOGGER.log(Level.SEVERE, "Lỗi khi xóa sản phẩm khỏi giỏ hàng", e);
                 cartActionMessage = "Lỗi: Đã có lỗi xảy ra khi xóa sản phẩm.";
             }
         }

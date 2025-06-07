@@ -40,7 +40,7 @@ public class AdminDAO extends DBContext {
         String sql = "SELECT admin_id, username, password, email, created_at FROM Admins WHERE username = ?";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return null;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class AdminDAO extends DBContext {
                 return mapResultSetToAdmin(rs); // Sử dụng helper method
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when fetching admin by username: " + username, ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi lấy admin theo tên người dùng: " + username, ex);
         }
         return null;
     }
@@ -62,21 +62,21 @@ public class AdminDAO extends DBContext {
         String testUsername = "admin";
         String testPasswordAttempt = "admin123"; // Password người dùng thử nhập
 
-        System.out.println("--- Attempting to get admin by username: " + testUsername + " ---");
+        System.out.println("--- Đang cố gắng lấy quyền quản trị theo tên người dùng: " + testUsername + " ---");
         Admin admin = dao.getAdminByUsername(testUsername); // Gọi phương thức mới
 
         if (admin != null) {
-            System.out.println("Admin found: " + admin.getUserName()); // Hoặc admin.getUserName()
-            System.out.println("Password from DB (for comparison): " + admin.getPassword());
+            System.out.println("Quản trị viên đã tìm thấy: " + admin.getUserName()); // Hoặc admin.getUserName()
+            System.out.println("Mật khẩu từ DB : " + admin.getPassword());
 
             // So sánh password ở đây (giống như Servlet sẽ làm)
             if (admin.getPassword() != null && admin.getPassword().equals(testPasswordAttempt)) {
-                System.out.println("Password matches! Login successful.");
+                System.out.println("Mật khẩu trùng khớp! Đăng nhập thành công.");
             } else {
-                System.out.println("Password does NOT match or password from DB is null. Login failed.");
+                System.out.println("Mật khẩu KHÔNG khớp hoặc mật khẩu từ DB là null. Đăng nhập không thành công.");
             }
         } else {
-            System.out.println("Admin with username '" + testUsername + "' not found. Login failed.");
+            System.out.println("Quản trị viên có tên người dùng '" + testUsername + "' không tìm thấy. Đăng nhập không thành công.");
         }
     }
 }

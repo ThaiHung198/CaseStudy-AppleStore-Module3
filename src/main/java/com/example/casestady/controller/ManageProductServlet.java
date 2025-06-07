@@ -66,7 +66,7 @@ public class ManageProductServlet extends HttpServlet {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in ManageProductServlet doGet", e);
-            request.setAttribute("errorMessage", "An error occurred: " + e.getMessage());
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
             listProducts(request, response);
         }
     }
@@ -104,7 +104,7 @@ public class ManageProductServlet extends HttpServlet {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in ManageProductServlet doPost", e);
-            request.setAttribute("errorMessage", "An error occurred: " + e.getMessage());
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
             listProducts(request, response); // Or forward to the specific form with error
         }
     }
@@ -129,8 +129,8 @@ public class ManageProductServlet extends HttpServlet {
     private void showAddProductForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         loadCategoriesForForm(request);
-        request.setAttribute("formAction", "add");
-        request.setAttribute("pageTitle", "Add New Product");
+        request.setAttribute("formAction", "Thêm");
+        request.setAttribute("pageTitle", "Thêm sản phẩm mới");
         request.getRequestDispatcher("/admin/manageProducts.jsp").forward(request, response);
     }
 
@@ -147,9 +147,9 @@ public class ManageProductServlet extends HttpServlet {
         // Basic Validation
         if (name == null || name.trim().isEmpty() || priceStr == null || priceStr.trim().isEmpty() ||
                 categoryIdStr == null || categoryIdStr.trim().isEmpty() || stockQuantityStr == null || stockQuantityStr.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Name, Price, Category, and Stock Quantity are required.");
+            request.setAttribute("errorMessage", "Cần phải có Tên, Giá, Danh mục và Số lượng hàng tồn kho.");
             loadCategoriesForForm(request); // Load categories again for the form
-            request.setAttribute("formAction", "add"); // Keep the form in add mode
+            request.setAttribute("formAction", "Thêm"); // Keep the form in add mode
             request.getRequestDispatcher("/admin/manageProducts.jsp").forward(request, response);
             return;
         }
@@ -170,14 +170,14 @@ public class ManageProductServlet extends HttpServlet {
 
             int productId = productDAO.addProduct(newProduct);
             if (productId != -1) {
-                request.getSession().setAttribute("successMessage", "Product added successfully!");
+                request.getSession().setAttribute("successMessage", "Sản phẩm được thêm thành công!");
             } else {
-                request.getSession().setAttribute("errorMessage", "Failed to add product. Please check data or logs.");
+                request.getSession().setAttribute("errorMessage", "Không thêm được sản phẩm. Vui lòng kiểm tra dữ liệu hoặc nhật ký.");
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid number format for Price, Category ID, or Stock Quantity.");
+            request.setAttribute("errorMessage", "Định dạng số không hợp lệ cho Giá, ID danh mục hoặc Số lượng hàng tồn kho.");
             loadCategoriesForForm(request);
-            request.setAttribute("formAction", "add");
+            request.setAttribute("formAction", "Thêm");
             request.getRequestDispatcher("/admin/manageProducts.jsp").forward(request, response);
             return;
         }
@@ -197,8 +197,8 @@ public class ManageProductServlet extends HttpServlet {
             if (existingProduct != null) {
                 loadCategoriesForForm(request);
                 request.setAttribute("productToEdit", existingProduct);
-                request.setAttribute("formAction", "update");
-                request.setAttribute("pageTitle", "Edit Product");
+                request.setAttribute("formAction", "Cập nhật");
+                request.setAttribute("pageTitle", "Sửa sản phẩm");
                 request.getRequestDispatcher("/admin/manageProducts.jsp").forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + "/admin/manageProducts?action=list&errorMessage=Product_not_found_for_ID_" + productId);
@@ -222,7 +222,7 @@ public class ManageProductServlet extends HttpServlet {
         if (idStr == null || idStr.trim().isEmpty() || name == null || name.trim().isEmpty() ||
                 priceStr == null || priceStr.trim().isEmpty() || categoryIdStr == null || categoryIdStr.trim().isEmpty() ||
                 stockQuantityStr == null || stockQuantityStr.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Product ID, Name, Price, Category, and Stock Quantity are required for update.");
+            request.setAttribute("errorMessage", "Mã sản phẩm, Tên, Giá, Danh mục và Số lượng hàng tồn kho là bắt buộc để cập nhật.");
             // Để tốt hơn, bạn nên load lại productToEdit và categories rồi forward lại form edit
             // Tạm thời redirect về list để đơn giản
             response.sendRedirect(request.getContextPath() + "/admin/manageProducts?action=edit&id="+idStr+"&validationError=true");
@@ -247,12 +247,12 @@ public class ManageProductServlet extends HttpServlet {
 
             boolean success = productDAO.updateProduct(productToUpdate);
             if (success) {
-                request.getSession().setAttribute("successMessage", "Product updated successfully!");
+                request.getSession().setAttribute("successMessage", "Sản phẩm được cập nhật thành công!");
             } else {
-                request.getSession().setAttribute("errorMessage", "Failed to update product.");
+                request.getSession().setAttribute("errorMessage", "Không thể cập nhật sản phẩm.");
             }
         } catch (NumberFormatException e) {
-            request.getSession().setAttribute("errorMessage", "Invalid number format for update.");
+            request.getSession().setAttribute("errorMessage", "Định dạng số để cập nhật không hợp lệ.");
         }
         response.sendRedirect(request.getContextPath() + "/admin/manageProducts?action=list");
     }
@@ -268,12 +268,12 @@ public class ManageProductServlet extends HttpServlet {
             int productId = Integer.parseInt(idStr);
             boolean success = productDAO.deleteProduct(productId);
             if (success) {
-                request.getSession().setAttribute("successMessage", "Product deleted successfully!");
+                request.getSession().setAttribute("successMessage", "Sản phẩm đã được xóa thành công!");
             } else {
-                request.getSession().setAttribute("errorMessage", "Failed to delete product. It might be referenced elsewhere or an error occurred.");
+                request.getSession().setAttribute("errorMessage", "Không xóa được sản phẩm. Có thể sản phẩm được tham chiếu ở nơi khác hoặc đã xảy ra lỗi.");
             }
         } catch (NumberFormatException e) {
-            request.getSession().setAttribute("errorMessage", "Invalid Product ID format for delete.");
+            request.getSession().setAttribute("errorMessage", "Định dạng ID sản phẩm không hợp lệ để xóa.");
         }
         response.sendRedirect(request.getContextPath() + "/admin/manageProducts?action=list");
     }

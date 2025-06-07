@@ -39,8 +39,6 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Cho phép thêm vào giỏ qua GET (ví dụ: link "Thêm nhanh")
-        // nhưng POST được khuyến khích hơn cho các action thay đổi trạng thái.
         handleCartAction(request, response);
     }
 
@@ -82,7 +80,7 @@ public class AddToCartServlet extends HttpServlet {
             Product product = productDAO.getProductById(productId);
 
             if (product != null) {
-                // Kiểm tra số lượng tồn kho (nếu cần thiết)
+                // Kiểm tra số lượng tồn kho
                 if (product.getStockQuantity() <= 0) {
                     session.setAttribute("cartMessage", "Sản phẩm '" + product.getName() + "' đã hết hàng!");
                     response.sendRedirect(request.getHeader("Referer") != null ? request.getHeader("Referer") : request.getContextPath() + "/home");

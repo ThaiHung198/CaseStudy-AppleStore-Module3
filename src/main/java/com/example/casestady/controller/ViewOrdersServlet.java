@@ -50,8 +50,8 @@ public class ViewOrdersServlet extends HttpServlet {
             request.getRequestDispatcher("/admin/adminViewOrderItems.jsp").forward(request, response); // Đổi tên JSP
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error in ViewOrdersServlet (loading ordered items)", e);
-            request.setAttribute("errorMessage", "An error occurred while loading ordered items: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Lỗi trong ViewOrdersServlet (đang tải các mục đã đặt hàng)", e);
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải các mục đã đặt hàng: " + e.getMessage());
             request.getRequestDispatcher("/admin/adminDashboard.jsp").forward(request, response); // Hoặc trang lỗi admin
         }
     }

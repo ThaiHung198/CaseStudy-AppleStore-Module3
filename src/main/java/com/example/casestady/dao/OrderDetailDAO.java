@@ -48,7 +48,7 @@ public class OrderDetailDAO extends DBContext {
         String sql = "INSERT INTO OrderDetails (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return false;
             }
             PreparedStatement ps = connection.prepareStatement(sql); // Không cần RETURN_GENERATED_KEYS nếu không lấy lại order_detail_id ngay
@@ -60,7 +60,7 @@ public class OrderDetailDAO extends DBContext {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when adding order detail", ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi thêm chi tiết đơn hàng", ex);
         }
         return false;
     }
@@ -76,7 +76,7 @@ public class OrderDetailDAO extends DBContext {
 
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return details;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -86,7 +86,7 @@ public class OrderDetailDAO extends DBContext {
                 details.add(mapResultSetToOrderDetail(rs)); // mapResultSetToOrderDetail sẽ xử lý việc lấy thêm thông tin Product
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when fetching order details for order ID: " + orderId, ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi lấy thông tin chi tiết đơn hàng cho ID đơn hàng: " + orderId, ex);
         }
         return details;
     }

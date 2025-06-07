@@ -352,7 +352,7 @@ public class ProductDAO extends DBContext {
         String sql = "UPDATE Products SET stock_quantity = ? WHERE product_id = ?";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return false;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -361,7 +361,7 @@ public class ProductDAO extends DBContext {
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when updating stock quantity for product ID: " + productId, ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi cập nhật số lượng hàng tồn kho cho ID sản phẩm: " + productId, ex);
         }
         return false;
     }

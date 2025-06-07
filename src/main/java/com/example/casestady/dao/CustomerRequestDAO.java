@@ -41,7 +41,7 @@ public class CustomerRequestDAO extends DBContext {
         }
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "Database connection is not initialized or closed.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return -1;
             }
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -62,7 +62,7 @@ public class CustomerRequestDAO extends DBContext {
             }
 
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when adding customer request", ex);
+            LOGGER.log(Level.SEVERE, "Lỗi SQL khi thêm yêu cầu của khách hàng", ex);
         }
         return -1;
     }
@@ -129,7 +129,7 @@ public class CustomerRequestDAO extends DBContext {
         String sql = "DELETE FROM customerrequests  WHERE request_id = ?";
         try {
             if (connection == null || connection.isClosed()) {
-                LOGGER.log(Level.SEVERE, "DaKết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
+                LOGGER.log(Level.SEVERE, "Kết nối cơ sở dữ liệu chưa được khởi tạo hoặc đóng.");
                 return false;
             }
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -152,10 +152,10 @@ public class CustomerRequestDAO extends DBContext {
         newRequest1.setMessage("Yêu cầu ship hỏa tốc");
         int newRequestId1 = dao.addCustomerRequest(newRequest1);
         if (newRequestId1 != -1) {
-            System.out.println("New request 1 added with ID: " + newRequestId1);
+            System.out.println("Yêu cầu mới 1 được thêm vào với ID: " + newRequestId1);
             CustomerRequest r1 = dao.getCustomerRequestById(newRequestId1);
             if (r1 != null)
-                System.out.println("Request 1 Status: " + r1.getStatus() + ",Received at: " + r1.getReceivedAt());
+                System.out.println("Yêu cầu 1 Trạng thái: " + r1.getStatus() + ",Đã nhận được vào lúc: " + r1.getReceivedAt());
         } else {
             System.out.println("Không thể thêm yêu cầu mới");
         }
@@ -172,7 +172,7 @@ public class CustomerRequestDAO extends DBContext {
             CustomerRequest r2 = dao.getCustomerRequestById(newRequestId2);
             if (r2 != null)
                 System.out.println("Yêu cầu 2 trạng thái: " + r2.getStatus() + ",Đã nhận được vào lúc: " + r2.getReceivedAt());
-            System.out.println("\n--- Test Update Request Status for Request 2 ---");
+            System.out.println("\n--- Trạng thái yêu cầu cập nhật thử nghiệm cho yêu cầu 2 ---");
             boolean updated = dao.updateRequestStatus(newRequestId2, "Replied");
             if (updated) {
                 System.out.println("Trạng thái yêu cầu 2 đã được cập nhật thành công.");
@@ -185,7 +185,7 @@ public class CustomerRequestDAO extends DBContext {
         } else {
             System.out.println("Không thể thêm yêu cầu mới 2.");
         }
-        System.out.println("\n--- Test Get All Customer Requests ---");
+        System.out.println("\n--- Kiểm tra Nhận tất cả các yêu cầu của khách hàng ---");
         List<CustomerRequest> allRequests = dao.getAllCustomerRequests();
         if (allRequests.isEmpty()) {
             System.out.println("Không tìm thấy yêu cầu của khách hàng.");

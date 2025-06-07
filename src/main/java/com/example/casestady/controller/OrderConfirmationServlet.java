@@ -34,7 +34,7 @@ public class OrderConfirmationServlet extends HttpServlet {
             List<Category> allCategories = categoryDAO.getAllCategories();
             request.setAttribute("allCategories", allCategories);
         } catch (Exception e) {
-            LOGGER.warning("Could not load categories for order confirmation page header: " + e.getMessage());
+            LOGGER.warning("Không thể tải danh mục cho tiêu đề trang xác nhận đơn hàng: " + e.getMessage());
         }
 
         request.getRequestDispatcher("/orderConfirmation.jsp").forward(request, response);

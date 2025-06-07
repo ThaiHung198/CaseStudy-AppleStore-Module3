@@ -25,7 +25,7 @@ public class AdminLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); // false: không tạo session mới nếu chưa có
         if (session != null && session.getAttribute("adminLoggedIn") != null){
-            response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp"); //Sẽ tạo trang/servlet này sau
+            response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
             return;
         }
         request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
@@ -51,12 +51,12 @@ public class AdminLoginServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
         }else {
             // đăng nhập thất bại
-            request.setAttribute("errorMessage", "Invalid username or password.");
+            request.setAttribute("thông báo lỗi", "Tên người dùng hoặc mật khẩu không hợp lệ.");
             request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
         }
     }
     @Override
     public String getServletInfo() {
-        return "Handles admin login requests";
+        return "Xử lý các yêu cầu đăng nhập của quản trị viên";
     }
 }
