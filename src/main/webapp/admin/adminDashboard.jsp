@@ -38,7 +38,6 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Tổng số danh mục</h5>
-                            <p class="card-text">XX</p> <%-- Sẽ lấy từ DB sau --%>
                             <a href="${pageContext.request.contextPath}/admin/manageCategories" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
@@ -47,7 +46,6 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Tổng số sản phẩm</h5>
-                            <p class="card-text">YY</p> <%-- Sẽ lấy từ DB sau --%>
                             <a href="${pageContext.request.contextPath}/admin/manageProducts" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
@@ -56,7 +54,6 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Lệnh chờ xử lý</h5>
-                            <p class="card-text">ZZ</p> <%-- Sẽ lấy từ DB sau --%>
                             <a href="${pageContext.request.contextPath}/admin/viewOrders" class="btn btn-primary">Xem</a>
                         </div>
                     </div>

@@ -69,8 +69,7 @@
                                 <p class="card-text text-danger font-weight-bold">
                                     <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="" minFractionDigits="0" maxFractionDigits="0"/> VND
                                 </p>
-                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary mt-auto add-to-cart-btn">Thêm vào giỏ</a>
-                            </div>
+                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary mt-auto add-to-cart-btn">Thêm vào giỏ</a>                            </div>
                         </div>
                     </div>
                 </c:forEach>

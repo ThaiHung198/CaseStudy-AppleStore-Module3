@@ -168,8 +168,7 @@
                                         </td>
                                         <td class="text-center">
                                             <a title="Sửa"
-                                               href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}"
-                                               class="btn btn-sm btn-info mr-1">
+                                               href="${pageContext.request.contextPath}/admin/manageProducts?action=edit&id=${product.productId}" class="btn btn-sm btn-info mr-1">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a title="Xóa"

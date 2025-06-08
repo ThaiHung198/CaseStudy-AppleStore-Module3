@@ -82,10 +82,7 @@
                                 <label for="quantity-${product.productId}" class="mr-2">Số lượng:</label>
                                 <input type="number" name="quantity" id="quantity-${product.productId}" class="form-control form-control-sm d-inline-block" value="1" min="1" max="${product.stockQuantity}" style="width: 70px;">
                             </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary btn-lg add-to-cart-btn-lg">Thêm vào giỏ</button>
-                            </div>
-                        </div>
+                                <a href="${pageContext.request.contextPath}/addToCart?productId=${product.productId}" class="btn btn-primary mt-auto add-to-cart-btn">Thêm vào giỏ</a>                            </div>
                     </form>
                 </c:if>
             </div>

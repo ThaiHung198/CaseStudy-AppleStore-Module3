@@ -191,7 +191,6 @@ public class ProductDAO extends DBContext {
         }
         return false;
     }
-
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO(); // Giả sử CategoryDAO đã có và hoạt động
@@ -365,4 +364,5 @@ public class ProductDAO extends DBContext {
         }
         return false;
     }
+
 }

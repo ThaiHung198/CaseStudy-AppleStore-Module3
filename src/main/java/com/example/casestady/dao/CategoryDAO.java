@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CategoryDAO  extends DBContext{
+    private static final Logger LOGGER = Logger.getLogger(CategoryDAO.class.getName());
     public CategoryDAO() {
         super();
     }

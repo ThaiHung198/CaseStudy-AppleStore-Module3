@@ -1,20 +1,13 @@
 <%-- File: webapp/bootstrap/header.jsp --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--
-    LƯU Ý: File này chỉ chứa phần HTML của header.
-    Các attribute như allCategories, totalCartItems phải được set bởi Servlet
-    gọi trang JSP chính đang include file này.
---%>
-
-<header> <%-- Bạn có thể giữ lại class "header-placeholder" nếu có style riêng cho nó trong style.css --%>
+<header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
-        <i class="fab fa-apple"></i>
-        AppleStore
+        <i class="fab fa-apple"></i> AppleStore
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavHeader" aria-controls="navbarNavHeader" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,7 +41,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminLogin">
-              <i class="fas fa-user-shield"></i> <span class="d-none d-lg-inline">Đăng Nhập</span>
+              <i class="fas fa-user-shield"></i> <span class="d-none d-lg-inline">Admin</span>
             </a>
           </li>
         </ul>
@@ -56,4 +49,4 @@
     </div>
   </nav>
 </header>
-<div style="padding-top: 70px;"></div> <%-- Khoảng đệm cho fixed-top navbar. Điều chỉnh 70px nếu cần. --%>
+<div style="padding-top: 70px;"></div> <%-- Đệm cho fixed-top navbar, điều chỉnh 70px nếu chiều cao navbar thay đổi --%>
