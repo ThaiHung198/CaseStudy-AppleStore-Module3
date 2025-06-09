@@ -191,6 +191,50 @@ public class ProductDAO extends DBContext {
         }
         return false;
     }
+    public List<Product> searchAndFilterProducts(String keyword, BigDecimal minPrice, BigDecimal maxPrice, Integer categoryId) {
+        List<Product> products = new ArrayList<>();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Products WHERE 1=1"); // Bắt đầu với điều kiện luôn đúng
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sqlBuilder.append(" AND LOWER(name) LIKE LOWER(?)");
+        }
+        if (minPrice != null) {
+            sqlBuilder.append(" AND price >= ?");
+        }
+        if (maxPrice != null) {
+            sqlBuilder.append(" AND price <= ?");
+        }
+        if (categoryId != null && categoryId > 0) {
+            sqlBuilder.append(" AND category_id = ?");
+        }
+        sqlBuilder.append(" ORDER BY name ASC");
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlBuilder.toString())) {
+            int paramIndex = 1;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + keyword.trim() + "%");
+            }
+            if (minPrice != null) {
+                ps.setBigDecimal(paramIndex++, minPrice);
+            }
+            if (maxPrice != null) {
+                ps.setBigDecimal(paramIndex++, maxPrice);
+            }
+            if (categoryId != null && categoryId > 0) {
+                ps.setInt(paramIndex++, categoryId);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                products.add(mapResultSetToProduct(rs)); // Giả sử bạn có hàm này
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "SQL Error during product search/filter", ex);
+        }
+        return products;
+    }
+
+
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO(); // Giả sử CategoryDAO đã có và hoạt động

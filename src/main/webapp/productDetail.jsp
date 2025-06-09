@@ -45,6 +45,11 @@
 
         <div class="row product-detail-layout"> <%-- Sử dụng row của Bootstrap --%>
             <div class="col-md-6 product-image-lg"> <%-- Cột cho ảnh --%>
+                <c:if test="${product.stockQuantity <= 0}">
+                    <div class="out-of-stock-overlay">
+                        <span>Hết hàng</span>
+                    </div>
+                </c:if>
                 <c:if test="${not empty product.imageUrl}">
                     <img src="${fn:escapeXml(product.imageUrl)}" class="img-fluid rounded" alt="${fn:escapeXml(product.name)}"> <%-- Thêm class img-fluid --%>
                 </c:if>

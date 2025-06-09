@@ -35,6 +35,10 @@
 <main class="container mt-4 flex-grow-1">
     <div class="page-header text-center mb-4">
         <h1>${not empty pageTitle ? pageTitle : 'Tất cả sản phẩm'}</h1>
+        <c:if test="${not empty searchKeyword}">
+            <p class="text-muted text-center">Hiển thị kết quả cho: "<strong><c:out value="${searchKeyword}"/></strong>"</p>
+        </c:if>
+
     </div>
 
     <%-- Thông báo lỗi từ ProductListServlet (ví dụ: categoryId không hợp lệ) --%>
@@ -51,7 +55,13 @@
             <div class="row"> <%-- Sử dụng row của Bootstrap cho product-grid --%>
                 <c:forEach var="product" items="${productList}">
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <%-- Cột Bootstrap --%>
-                        <div class="card h-100 product-card"> <%-- Bootstrap Card --%>
+                        <div class="card h-100 product-card ${product.stockQuantity <= 0 ? 'is-out-of-stock' : ''}"> <%-- Thêm is-out-of-stock nếu cần --%>
+                                <%-- LỚP PHỦ HẾT HÀNG --%>
+                            <c:if test="${product.stockQuantity <= 0}">
+                                <div class="out-of-stock-overlay">
+                                    <span>Hết hàng</span>
+                                </div>
+                            </c:if>
                             <a href="${pageContext.request.contextPath}/product-detail?id=${product.productId}">
                                 <c:if test="${not empty product.imageUrl}">
                                     <img src="${fn:escapeXml(product.imageUrl)}" class="card-img-top" alt="${fn:escapeXml(product.name)}">

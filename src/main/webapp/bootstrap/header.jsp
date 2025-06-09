@@ -33,6 +33,23 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/contact">Liên Hệ</a>
           </li>
         </ul>
+        <div class="navbar-nav mx-auto"> <%-- mx-auto để cố gắng căn giữa --%>
+          <form class="form-inline" action="${pageContext.request.contextPath}/products" method="get" id="searchAndFilterForm">
+            <input class="form-control form-control-sm mr-sm-2" type="search" name="searchKeyword"
+                   placeholder="Tìm sản phẩm..." aria-label="Search"
+                   value="${fn:escapeXml(param.searchKeyword)}" style="width: 130px;">
+            <select name="priceRange" class="form-control form-control-sm mr-sm-2" style="width: 130px;">
+              <option value="">Lọc theo giá</option>
+              <option value="0-2000000" ${param.priceRange eq '0-2000000' ? 'selected' : ''}>Dưới 2 triệu</option>
+              <option value="2000000-5000000" ${param.priceRange eq '2000000-5000000' ? 'selected' : ''}>2 - 5 triệu</option>
+              <option value="5000000-10000000" ${param.priceRange eq '5000000-10000000' ? 'selected' : ''}>5 - 10 triệu</option>
+              <option value="10000000-20000000" ${param.priceRange eq '10000000-20000000' ? 'selected' : ''}>10 - 20 triệu</option>
+              <option value="20000000-" ${param.priceRange eq '20000000-' ? 'selected' : ''}>Trên 20 triệu</option>
+            </select>
+
+            <button class="btn btn-outline-light btn-sm" type="submit">Lọc/Tìm</button>
+          </form>
+        </div>
         <ul class="navbar-nav">
           <li class="nav-item ${ fn:endsWith(pageContext.request.servletPath, '/viewCart') or fn:endsWith(pageContext.request.servletPath, 'cart.jsp') ? 'active' : '' }">
             <a class="nav-link" href="${pageContext.request.contextPath}/viewCart" id="cart-link">
@@ -41,7 +58,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminLogin">
-              <i class="fas fa-user-shield"></i> <span class="d-none d-lg-inline">Admin</span>
+              <i class="fas fa-user-shield"></i> <span class="d-none d-lg-inline">Đăng Nhập</span>
             </a>
           </li>
         </ul>

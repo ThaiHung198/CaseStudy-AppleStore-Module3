@@ -27,7 +27,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 admin-main-content">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Danh Mục Quản Lý</h1>
+                <h1 class="h2">Quản Lý Kho Hàng</h1>
             </div>
 
             <p>Chào mừng, <strong><c:out value="${sessionScope.adminLoggedIn.userName}"/></strong>!</p>
@@ -37,7 +37,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Tổng số danh mục</h5>
+                            <h5 class="card-title">Quản Lý Danh Mục</h5>
                             <a href="${pageContext.request.contextPath}/admin/manageCategories" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Tổng số sản phẩm</h5>
+                            <h5 class="card-title">Quản Lý Sản Phẩm</h5>
                             <a href="${pageContext.request.contextPath}/admin/manageProducts" class="btn btn-primary">Quản lý</a>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Lệnh chờ xử lý</h5>
+                            <h5 class="card-title">Lệnh Chờ Xử Lý</h5>
                             <a href="${pageContext.request.contextPath}/admin/viewOrders" class="btn btn-primary">Xem</a>
                         </div>
                     </div>
@@ -64,13 +64,11 @@
     </div>
 </div>
 
-<%-- Footer có thể không cần thiết cho layout admin có sidebar, hoặc đặt khác --%>
-<%-- <jsp:include page="/admin/includes/admin_footer.jsp" /> --%>
+
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<%-- <script src="${pageContext.request.contextPath}/js/admin_custom.js"></script> --%> <%-- Nếu có JS riêng cho admin --%>
 </body>
 </html>

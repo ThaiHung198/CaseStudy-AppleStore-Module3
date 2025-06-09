@@ -153,6 +153,40 @@ body {
 .breadcrumbs a { text-decoration: none; color: #007bff; }
 .breadcrumbs span { color: #777; }
 
+
+/* ----------------CĂn chỉnh form giá sản phẩm --------------------------*/
+.product-grid .card.h-100 { /* Đảm bảo card thực sự chiếm 100% chiều cao của flex/grid item */
+    /* height: 100%; không cần thiết nữa nếu Bootstrap h-100 hoạt động */
+}
+
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Quan trọng để card-body co giãn */
+}
+
+.product-card .card-title { /* Chứa tên sản phẩm */
+    /* Nếu muốn giới hạn chiều cao và thêm '...' cho tên dài */
+    min-height: 4.5em; /* Điều chỉnh cho khoảng 3 dòng chữ, tùy font-size và line-height */
+    max-height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.5rem; /* Giữ khoảng cách với giá */
+}
+
+.product-card .price {
+    /* margin-top: auto; // Bỏ đi nếu card-title co giãn */
+    margin-bottom: 0.75rem;
+}
+
+.product-card .btn.mt-auto { /* Bootstrap đã có mt-auto */
+    /* width: 100%; // Nếu muốn nút rộng hết card */
+}
+
+
 /* Cart Page */
 .quantity-input { width: 70px !important; text-align: center; }
 .table th, .table td { vertical-align: middle; }
@@ -162,3 +196,47 @@ body {
 .admin-main-content .card-header .card-title { font-size: 1.5rem; }
 .admin-main-content .card-header .btn-link { font-size: 1.2rem; padding-top: 0; padding-bottom: 0; }
 .admin-main-content .table th { font-weight: 600; }
+
+/*------------------ HẾT HÀNG---------------------*/
+.product-card, .product-image-lg { /* Thêm .product-image-lg nếu bạn dùng nó cho ảnh chi tiết */
+    position: relative; /* Quan trọng để .out-of-stock-overlay được định vị đúng */
+}
+
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha (ảnh hoặc card) */
+    height: 100%;/* Chiếm toàn bộ chiều cao của phần tử cha (ảnh hoặc card) */
+    /* Nếu bạn muốn overlay chỉ che phủ đúng phần ảnh trong product-card,
+       bạn cần đảm bảo thẻ <img> hoặc thẻ cha trực tiếp của nó có position:relative
+       và overlay này được đặt bên trong thẻ đó, cùng với việc điều chỉnh width/height.
+       Tuy nhiên, che phủ toàn bộ card thường đơn giản hơn. */
+    background-color: rgba(255, 255, 255, 0.65); /* Nền trắng hơi mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    pointer-events: none; /* Để không cản trở việc click vào link chi tiết sản phẩm nếu overlay nằm trên cả link */
+    border-radius: 8px; /* Nếu product-card của bạn có bo góc */
+}
+
+.out-of-stock-overlay span {
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em; /* Hoặc lớn hơn tùy ý */
+    text-transform: uppercase;
+}
+
+/* Tùy chọn: làm mờ hơn một chút cho toàn bộ card nếu hết hàng */
+.product-card.is-out-of-stock {
+    opacity: 0.8; /* Hoặc một giá trị phù hợp */
+}
+/* Ảnh bên trong card hết hàng có thể làm xám đi */
+.product-card.is-out-of-stock img.card-img-top {
+    /* filter: grayscale(80%); */
+}
+

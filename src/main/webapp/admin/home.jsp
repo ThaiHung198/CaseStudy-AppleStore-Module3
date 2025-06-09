@@ -107,7 +107,13 @@
                 <div class="row">
                     <c:forEach var="prodInCat" items="${productsInThisCategory}"> <%-- Lặp qua List sản phẩm của category --%>
                         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                            <div class="card h-100 product-card">
+                            <div class="card h-100 product-card ${prodInCat.stockQuantity <= 0 ? 'is-out-of-stock' : ''}"> <%-- Thêm is-out-of-stock nếu cần --%>
+                                    <%-- LỚP PHỦ HẾT HÀNG --%>
+                                <c:if test="${prodInCat.stockQuantity <= 0}">
+                                    <div class="out-of-stock-overlay">
+                                        <span>Hết hàng</span>
+                                    </div>
+                                </c:if>
                                 <a href="${pageContext.request.contextPath}/product-detail?id=${prodInCat.productId}">
                                     <c:if test="${not empty prodInCat.imageUrl}">
                                         <img src="${fn:escapeXml(prodInCat.imageUrl)}" class="card-img-top" alt="${fn:escapeXml(prodInCat.name)}">

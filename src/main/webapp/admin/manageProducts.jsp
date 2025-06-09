@@ -126,18 +126,19 @@
                         <h2 class="mt-4">Danh sách sản phẩm hiện có</h2>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Ảnh</th>
-                                    <th>Tên</th>
-                                    <th>Danh mục</th>
-                                    <th class="text-right">Giá</th>
-                                    <th class="text-center">Số lượng</th>
-                                    <th class="text-center">Nổi bật</th>
-                                    <th class="text-center">Hành động</th>
-                                </tr>
-                                </thead>
+                                <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Ảnh</th>
+                                <th class="text-center">Tên</th>
+                                <th class="text-center">Danh mục</th>
+                                <th class="text-right">Giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Nổi bật</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                            </thead>
+
                                 <tbody>
                                 <c:forEach var="product" items="${productList}">
                                     <tr>
@@ -145,11 +146,11 @@
                                         <td class="text-center">
                                             <c:if test="${not empty product.imageUrl}">
                                                 <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}"
-                                                     style="width:50px; height:auto; object-fit: contain;">
+                                                     style="width:35px; height:auto; object-fit: contain;">
                                             </c:if>
                                             <c:if test="${empty product.imageUrl}">
                                                 <img src="${pageContext.request.contextPath}/images/placeholder.png" alt="No image"
-                                                     style="width:50px; height:auto; object-fit: contain;">
+                                                     style="width:35px; height:auto; object-fit: contain;">
                                             </c:if>
                                         </td>
                                         <td><c:out value="${product.name}"/></td>

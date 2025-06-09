@@ -27,7 +27,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 admin-main-content">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Danh sách hóa đơn</h1>
+                <h1 class="h2">Danh Sách Sản Phẩm Đã Bán</h1>
             </div>
 
             <c:if test="${not empty requestScope.errorMessage}">
@@ -38,12 +38,13 @@
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th>ID Hóa Đơn</th>
-                        <th>Ngày Đặt Hàng</th>
-                        <th>Tên Sản Phẩm</th>
+                        <th class="text-center">ID <br>
+                            Hóa Đơn</th>
+                        <th class="text-center">Ngày Đặt Hàng</th>
+                        <th class="text-center">Tên Sản Phẩm</th>
                         <th class="text-center">Số Lượng</th>
                         <th class="text-right">Giá lúc mua</th>
-                        <th class="text-right">Tổng Hóa Đơn</th>
+                        <th class="text-right">Tổng Thu</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,7 +63,7 @@
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <td colspan="6" class="text-center">No ordered items found.</td>
+                                <td colspan="6" class="text-center">Không tìm thấy mục nào đã đặt hàng.</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>
