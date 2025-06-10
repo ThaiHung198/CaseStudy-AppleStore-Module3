@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -30,7 +32,7 @@
             </li>
           </c:if>
           <li class="nav-item ${ pageContext.request.servletPath eq '/contact' ? 'active' : '' }">
-            <a class="nav-link" href="${pageContext.request.contextPath}/contact">Liên Hệ</a>
+            <a class="nav-link" href= #"/contact"><i class="fa-solid fa-phone"></i> 0999888999</a>
           </li>
         </ul>
         <div class="navbar-nav mx-auto"> <%-- mx-auto để cố gắng căn giữa --%>
@@ -47,7 +49,7 @@
               <option value="20000000-" ${param.priceRange eq '20000000-' ? 'selected' : ''}>Trên 20 triệu</option>
             </select>
 
-            <button class="btn btn-outline-light btn-sm" type="submit">Lọc/Tìm</button>
+            <button class="btn btn-outline-light btn-sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
           </form>
         </div>
         <ul class="navbar-nav">

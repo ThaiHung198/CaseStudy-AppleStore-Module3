@@ -112,9 +112,6 @@ public class ManageProductServlet extends HttpServlet {
     private void listProducts(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Product> productList = productDAO.getAllProducts();
-        // Để hiển thị tên Category, bạn có thể cần sửa ProductDAO.getAllProducts() để join bảng
-        // Hoặc lặp qua productList và gọi categoryDAO.getCategoryById(product.getCategoryId()) cho mỗi product
-        // Cách đơn giản hơn là truyền cả list categories vào JSP và dùng JSTL để tìm tên category
         List<Category> categoryList = categoryDAO.getAllCategories();
         request.setAttribute("productList", productList);
         request.setAttribute("categoryListAll", categoryList); // Để hiển thị tên category trong bảng

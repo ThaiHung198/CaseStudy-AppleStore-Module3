@@ -57,7 +57,7 @@ public class AddToCartServlet extends HttpServlet {
 
         if (productIdStr == null || productIdStr.trim().isEmpty()) {
             // Xử lý lỗi: không có productId
-            LOGGER.log(Level.WARNING, "Add to cart failed: productId is missing.");
+            LOGGER.log(Level.WARNING, "Thêm vào giỏ hàng không thành công: thiếu productId.");
             response.sendRedirect(request.getHeader("Referer") != null ? request.getHeader("Referer") : request.getContextPath() + "/home");
             return;
         }
@@ -72,7 +72,7 @@ public class AddToCartServlet extends HttpServlet {
                         quantityToAdd = 1; // Đảm bảo số lượng là dương
                     }
                 } catch (NumberFormatException e) {
-                    LOGGER.log(Level.WARNING, "Invalid quantity format, defaulting to 1: " + quantityStr);
+                    LOGGER.log(Level.WARNING, "Định dạng số lượng không hợp lệ, mặc định là 1: " + quantityStr);
                     quantityToAdd = 1;
                 }
             }
@@ -117,15 +117,15 @@ public class AddToCartServlet extends HttpServlet {
 
             } else {
                 // Không tìm thấy sản phẩm
-                LOGGER.log(Level.WARNING, "Add to cart failed: Product not found for ID " + productId);
+                LOGGER.log(Level.WARNING, "Thêm vào giỏ hàng không thành công: Không tìm thấy sản phẩm cho ID " + productId);
                 session.setAttribute("cartMessage", "Lỗi: Sản phẩm không tồn tại!");
             }
 
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.WARNING, "Add to cart failed: Invalid productId format " + productIdStr, e);
+            LOGGER.log(Level.WARNING, "Thêm vào giỏ hàng không thành công: Định dạng productId không hợp lệ " + productIdStr, e);
             session.setAttribute("cartMessage", "Lỗi: ID sản phẩm không hợp lệ!");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error in AddToCartServlet", e);
+            LOGGER.log(Level.SEVERE, "Lỗi trong AddToCartServlet", e);
             session.setAttribute("cartMessage", "Lỗi: Đã có lỗi xảy ra, vui lòng thử lại.");
         }
 
